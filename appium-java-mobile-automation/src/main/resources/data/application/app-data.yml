@@ -1,0 +1,11 @@
+implicitTimeOut: 3000
+
+waitTime:
+  small: 2000
+  medium: 5000
+  high: 8000
+
+testSuiteReportName: Test Suite Execution Report
+remoteHubUrl: https://www.remote.com
+
+appiumLocalIp: 127.0.0.1

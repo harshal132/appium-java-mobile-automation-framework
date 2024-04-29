@@ -1,0 +1,56 @@
+{
+  "android":
+  {
+    "real": {
+      "udid" : "R5CRC1G6HDZ",
+      "platformName": "android",
+      "platformVersion":"30",
+      "app": "/Users/sneha/Documents/xcodeDummy/iostest/build/Release-iphonesimulator/iostest.app",
+      "appPackage": "com.tejuri.app.walifStaging",
+      "appActivity": "com.pindubai.app.walif.activities.SplashActivity_",
+      "appPackageProd": "com.tejuri.app.walif",
+      "appActivityProd": "com.pindubai.app.walif.activities.SplashActivity_",
+      "noReset": false,
+      "automationName": "uiAutomator2",
+      "orientation": "portrait",
+      "autoGrantPermissions": true
+    },
+    "emulator": {
+      "deviceName": "emulator-5554",
+      "platformName": "android",
+      "platformVersion":"31",
+      "app": "/Users/sneha/Documents/xcodeDummy/iostest/build/Release-iphonesimulator/iostest.app",
+      "appPackage": "com.tejuri.app.walifStaging",
+      "appActivity": "com.pindubai.app.walif.activities.SplashActivity_",
+      "appPackageProd": "com.tejuri.app.walif",
+      "appActivityProd": "com.pindubai.app.walif.activities.SplashActivity_",
+      "noReset": false,
+      "automationName": "uiAutomator2",
+      "orientation": "portrait",
+      "autoGrantPermissions": true
+    }
+  },
+  "ios":
+  {
+    "real": {
+      "udid" : "00008110-001644D83C81801E",
+      "platformName": "iOS",
+      "platformVersion":"15.1",
+      "bundleId": "com.tejuri.app.walif-staging",
+      "bundleIdProd": "com.tejuri.app.walif",
+      "noReset": false,
+      "automationName": "XCUITest",
+      "autoGrantPermissions": true
+    },
+    "emulator": {
+      "deviceName": "iPhone 14 Plus",
+      "platformName": "iOS",
+      "platformVersion":"16.4",
+      "bundleId": "com.tejuri.app.walif-staging",
+      "bundleIdProd": "com.tejuri.app.walif",
+      "noReset": false,
+      "automationName": "XCUITest",
+      "autoGrantPermissions": true
+    }
+  }
+}

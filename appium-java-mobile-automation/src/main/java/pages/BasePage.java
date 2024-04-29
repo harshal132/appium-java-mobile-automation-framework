@@ -2,6 +2,7 @@ package pages;
 
 import com.google.common.collect.ImmutableMap;
 import common.constants.FilePath;
+import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
@@ -13,15 +14,14 @@ import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import tests.BaseTest;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -61,9 +61,9 @@ public class BasePage {
         try {
             driver.navigate().forward();;
             waitForScreenToLoad();
-            logger.debug("Naviagted to forward screen ");
+            System.out.println("Naviagted to forward screen ");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not navigate to forward screen", e);
+            System.out.println("Exception reached: Could not navigate to forward screen"+ e);
             throw e;
         }
     }
@@ -72,9 +72,9 @@ public class BasePage {
         WebElement element = null;
         try {
             element = driver.findElement(locator);
-            logger.debug("WebElement found");
+            System.out.println("WebElement found");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get Element", e);
+            System.out.println("Exception reached: Could not get Element"+ e);
             throw e;
         }
         return element;
@@ -84,9 +84,9 @@ public class BasePage {
         List<WebElement> elements = null;
         try {
             elements = driver.findElements(locator);
-            logger.debug("WebElements found");
+            System.out.println("WebElements found");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get elements", e);
+            System.out.println("Exception reached: Could not get elements"+ e);
             throw e;
         }
         return elements;
@@ -99,9 +99,9 @@ public class BasePage {
     protected void clearText(WebElement element) {
         try {
             element.clear();
-            logger.debug("WebElement text cleared");
+            System.out.println("WebElement text cleared");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not clear text", e);
+            System.out.println("Exception reached: Could not clear text"+ e);
             throw e;
         }
     }
@@ -117,9 +117,9 @@ public class BasePage {
     protected void enterKeybordKeys(WebElement element, CharSequence... keysToSend) {
         try {
             element.sendKeys(keysToSend);
-            logger.debug("Keys entered on element");
+            System.out.println("Keys entered on element");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not enter keys", e);
+            System.out.println("Exception reached: Could not enter keys"+ e);
             throw e;
         }
     }
@@ -131,9 +131,9 @@ public class BasePage {
     protected void enterTextWithoutClear(String text, WebElement element) {
         try {
             element.sendKeys(text);
-            logger.debug("Text entered on element: " + text);
+            System.out.println("Text entered on element: " + text);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not enter text", e);
+            System.out.println("Exception reached: Could not enter text"+ e);
             throw e;
         }
     }
@@ -143,9 +143,9 @@ public class BasePage {
         try {
             clearText(element);
             element.sendKeys(text);
-            logger.debug("Text entered on element: " + text);
+            System.out.println("Text entered on element: " + text);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not enter text", e);
+            System.out.println("Exception reached: Could not enter text"+ e);
             throw e;
         }
     }
@@ -158,9 +158,9 @@ public class BasePage {
                 element.sendKeys(Character.toString((char) ch));
                 hardWait(20);
             });
-            logger.debug("Text entered on element char by char: " + text);
+            System.out.println("Text entered on element char by char: " + text);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not enter text char by char", e);
+            System.out.println("Exception reached: Could not enter text char by char"+ e);
             throw e;
         }
     }
@@ -173,9 +173,9 @@ public class BasePage {
         String text = "";
         try {
             text = element.getText();
-            logger.debug("Element text returned: " + text);
+            System.out.println("Element text returned: " + text);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get text by element", e);
+            System.out.println("Exception reached: Could not get text by element"+ e);
         }
         return text;
     }
@@ -187,9 +187,9 @@ public class BasePage {
     protected void click(WebElement element) {
         try {
             element.click();
-            logger.debug("Clicked on element");
+            System.out.println("Clicked on element");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not click by element", e);
+            System.out.println("Exception reached: Could not click by element"+ e);
             throw e;
         }
     }
@@ -203,7 +203,7 @@ public class BasePage {
         try {
             element.getTagName();
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get tagName", e);
+            System.out.println("Exception reached: Could not get tagName"+ e);
             throw e;
         }
         return tagName;
@@ -221,7 +221,7 @@ public class BasePage {
                 result = true;
             }
         } catch (Exception e) {
-            logger.error("Exception reached: Could not verify attribute's presence ", e);
+            System.out.println("Exception reached: Could not verify attribute's presence "+ e);
             throw e;
         }
         return result;
@@ -235,9 +235,9 @@ public class BasePage {
         String text = "";
         try {
             text = element.getAttribute(attributeName);
-            logger.debug("Got attribute: " + attributeName + " value: " + text);
+            System.out.println("Got attribute: " + attributeName + " value: " + text);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get attribute", e);
+            System.out.println("Exception reached: Could not get attribute"+ e);
             throw e;
         }
         return text;
@@ -247,9 +247,9 @@ public class BasePage {
         int count = -1;
         try {
             count = getElements(locator).size();
-            logger.debug("Got number of elments count: " + count);
+            System.out.println("Got number of elments count: " + count);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get elements count", e);
+            System.out.println("Exception reached: Could not get elements count"+ e);
             throw e;
         }
         return count;
@@ -267,102 +267,69 @@ public class BasePage {
 
             if (getElementsCount(locator) > 0) {
                 boolean isDisplayed = getElement(locator).isDisplayed();
-                logger.debug("Got isDisplayed value as: " + isDisplayed);
+                System.out.println("Got isDisplayed value as: " + isDisplayed);
                 return !(shouldBeDisplayed ^ isDisplayed);
             } else {
-                logger.debug("Got element count value as equal to 0");
+                System.out.println("Got element count value as equal to 0");
                 if (!shouldBeDisplayed)
                     return true;
                 else
                     return false;
             }
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get element is displayed status", e);
+            System.out.println("Exception reached: Could not get element is displayed status"+ e);
             throw e;
 
         }
     }
 
-    /**
-     * checks if element is displayed
-     *
-     * @param shouldBeDisplayed
-     * @param locator
-     * @return isDisplayed
-     */
     protected boolean isDisplayedIfElementOnDom(boolean shouldBeDisplayed, WebElement element) {
         try {
             boolean isDisplayed = element.isDisplayed();
-            logger.debug("Got isDisplayed value as: " + isDisplayed);
+            System.out.println("Got isDisplayed value as: " + isDisplayed);
             return !(shouldBeDisplayed ^ isDisplayed);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get element is displayed status", e);
+            System.out.println("Exception reached: Could not get element is displayed status"+ e);
             throw e;
 
         }
     }
 
-    /**
-     * waits by thread wait
-     *
-     * @param timeInMilliSeconds
-     */
     public void hardWait(long timeInMilliSeconds) {
         try {
             Thread.sleep(timeInMilliSeconds);
         } catch (InterruptedException e) {
-            logger.warn("Exception reached: Could not add hardwait", e);
+            System.out.println("Exception reached: Could not add hardwait"+ e);
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not add hardwait", e);
+            System.out.println("Exception reached: Could not add hardwait"+ e);
         }
     }
 
-    /**
-     * waits till element is clickable
-     *
-     * @param locator
-     * @param timeInMilliSeconds
-     * @return webelement
-     */
     protected WebElement waitForElementToBeClickable(By locator, int timeInMilliSeconds) {
         WebElement element = null;
         try {
             element = new WebDriverWait(driver, Duration.ofMillis(timeInMilliSeconds))
                     .until(ExpectedConditions.elementToBeClickable(locator));
-            logger.debug("Waited for element to be clickable");
+            System.out.println("Waited for element to be clickable");
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be clickable", e);
+            System.out.println("Exception reached: Could not wait for element to be clickable"+ e);
             throw e;
         }
         return element;
     }
 
-    /**
-     * waits till element is clickable
-     *
-     * @param locator
-     * @param timeInMilliSeconds
-     * @return webelement
-     */
     protected WebElement waitForElementToBeClickable(WebElement element, int timeInMilliSeconds) {
         try {
             element = new WebDriverWait(driver, Duration.ofMillis(timeInMilliSeconds))
                     .until(ExpectedConditions.elementToBeClickable(element));
-            logger.debug("Waited for element to be clickable");
+            System.out.println("Waited for element to be clickable");
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be clickable", e);
+            System.out.println("Exception reached: Could not wait for element to be clickable"+ e);
             throw e;
         }
         return element;
     }
 
-    /**
-     * waits till element is visible
-     *
-     * @param locator
-     * @param timeInMilliSeconds
-     * @return webelement
-     */
     protected WebElement waitForElementToBeVisible(By locator, int timeInMilliSeconds) {
         WebElement element = null;
         try {
@@ -370,38 +337,25 @@ public class BasePage {
                     .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class)
                     .until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be visible", e);
+            System.out.println("Exception reached: Could not wait for element to be visible"+ e);
             throw e;
         }
         return element;
     }
 
-    /**
-     * waits till elements are visible
-     *
-     * @param locator
-     * @param timeInMilliSeconds
-     * @return List<WebElement>
-     */
     protected List<WebElement> waitForElementsToBeVisible(By locator, int timeInMilliSeconds) {
         List<WebElement> elements = null;
         try {
             elements = new WebDriverWait(driver, Duration.ofMillis(timeInMilliSeconds))
                     .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
-            logger.debug("Waited for element to be clickable");
+            System.out.println("Waited for element to be clickable");
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be clickable", e);
+            System.out.println("Exception reached: Could not wait for element to be clickable"+ e);
             throw e;
         }
         return elements;
     }
 
-    /**
-     * waits till element is invisible
-     *
-     * @param locator
-     * @param timeInMilliSeconds
-     */
     protected boolean waitForElementToBeInVisible(By locator, int timeInMilliSeconds) {
         boolean elementInvisible = false;
         try {
@@ -409,18 +363,12 @@ public class BasePage {
                     .pollingEvery(Duration.ofMillis(200)).ignoring(TimeoutException.class)
                     .until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be invisible", e);
+            System.out.println("Exception reached: Could not wait for element to be invisible"+ e);
             throw e;
         }
         return elementInvisible;
     }
 
-    /**
-     * waits till element is not stale
-     *
-     * @param locator
-     * @return webelement
-     */
     protected WebElement waitForElementToBecomeUnstale(By locator) {
         WebElement element = null;
         try {
@@ -429,7 +377,7 @@ public class BasePage {
                     .ignoring(TimeoutException.class)
                     .until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(locator)));
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for element to be unstale", e);
+            System.out.println("Exception reached: Could not wait for element to be stale"+ e);
             throw e;
         }
         return element;
@@ -441,51 +389,38 @@ public class BasePage {
     public void waitForScreenToLoad() {
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(10000));
-            logger.debug("Waited for screen to load");
+            System.out.println("Waited for screen to load");
         } catch (Exception e) {
-            logger.warn("Exception reached: Could not wait for screen to be loaded", e);
+            System.out.println("Exception reached: Could not wait for screen to be loaded"+ e);
         }
     }
 
-    /**
-     * get build version appium server details
-     *
-     * @param locator
-     */
     protected Map <String, Object> getServerStatus() {
         Map <String, Object> serverVersionDetails= null;
         try {
-            logger.debug("got server status");
+            System.out.println("got server status");
             serverVersionDetails =  driver.getStatus();
         } catch (Exception e) {
-            logger.error("Exception reached: Could not get server status", e);
+            System.out.println("Exception reached: Could not get server status"+ e);
             throw e;
         }
         return serverVersionDetails;
     }
 
-    /**
-     * get app id in map
-     *
-     */
     public ImmutableMap<String, String> getAppId() {
         if(BaseTest.isAndroidTest())
-            return ImmutableMap.of("appId", (String) DriverFactory.capabilities.getCapability(AndroidMobileCapabilityType.APP_PACKAGE));
+            return ImmutableMap.of("appId", (String) MobileDriverFactory.capabilities.getCapability(AndroidMobileCapabilityType.APP_PACKAGE));
         else
-            return ImmutableMap.of("bundleId", (String) DriverFactory.capabilities.getCapability(IOSMobileCapabilityType.BUNDLE_ID));
+            return ImmutableMap.of("bundleId", (String) MobileDriverFactory.capabilities.getCapability(IOSMobileCapabilityType.BUNDLE_ID));
     }
 
-    /**
-     * resets location permission on ios
-     *
-     */
     public void jsIosResetLocationPermission() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: resetPermission", ImmutableMap.of("service", "location"));
-            logger.debug("app terminated and cleared cache");
+            System.out.println("app terminated and cleared cache");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not terminate app", e);
+            System.out.println("Exception reached: Could not terminate app"+ e);
             throw e;
         }
     }
@@ -498,9 +433,9 @@ public class BasePage {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: terminateApp", getAppId());
-            logger.debug("app terminated and cleared cache");
+            System.out.println("app terminated and cleared cache");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not terminate app", e);
+            System.out.println("Exception reached: Could not terminate app"+ e);
             throw e;
         }
     }
@@ -513,9 +448,9 @@ public class BasePage {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: backgroundApp");
-            logger.debug("app put in background");
+            System.out.println("app put in background");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not put app in background", e);
+            System.out.println("Exception reached: Could not put app in background"+ e);
             throw e;
         };
     }
@@ -528,9 +463,9 @@ public class BasePage {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: activateApp", getAppId());
-            logger.debug("activated app without clearing cache");
+            System.out.println("activated app without clearing cache");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not activate app", e);
+            System.out.println("Exception reached: Could not activate app"+ e);
             throw e;
         }
     }
@@ -543,9 +478,9 @@ public class BasePage {
         try {
             jsTerminateAppClearingCache();
             jsActivateAppithoutClearingCache();
-            logger.debug("clse and launch app after clearing cache");
+            System.out.println("clse and launch app after clearing cache");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not close and launch app", e);
+            System.out.println("Exception reached: Could not close and launch app"+ e);
             throw e;
         }
     }
@@ -560,9 +495,9 @@ public class BasePage {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: launchApp", getAppId());
             hardWait(2000);
-            logger.debug("launched app without clearing cache");
+            System.out.println("launched app without clearing cache");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not launch app", e);
+            System.out.println("Exception reached: Could not launch app"+ e);
             throw e;
         }
     }
@@ -576,50 +511,38 @@ public class BasePage {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             isInstalled = (boolean) jsDriver.executeScript("mobile: isAppInstalled", getAppId());
-            logger.debug("got is app installed status");
+            System.out.println("got is app installed status");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not check if app is installed", e);
+            System.out.println("Exception reached: Could not check if app is installed"+ e);
             throw e;
         }
         return isInstalled;
     }
 
-    /**
-     * hide keyboard
-     *
-     */
     public void jsHideKeyboard() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: hideKeyboard");
-            logger.debug("hidden keyboard");
+            System.out.println("hidden keyboard");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not hide keyboard", e);
+            System.out.println("Exception reached: Could not hide keyboard"+ e);
             throw e;
         };
     }
 
-    /**
-     * check if keyboard displayed
-     *
-     */
     public boolean jsIsKeybordShown() {
         boolean isKeyboardShown;
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             isKeyboardShown = (boolean)jsDriver.executeScript("mobile: isKeyboardShown");
-            logger.debug("got value if keyboard displayed");
+            System.out.println("got value if keyboard displayed");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not check if keyborad displayed", e);
+            System.out.println("Exception reached: Could not check if keyborad displayed"+ e);
             throw e;
         };
         return isKeyboardShown;
     }
 
-    /**
-     * Enum for direction
-     *
-     */
     public enum Direction {
         RIGHT,
         LEFT,
@@ -627,10 +550,6 @@ public class BasePage {
         UP
     }
 
-    /**
-     * perform javascript scroll
-     *
-     */
     public void jsIosScrollTillEnd(int numberOfTimesToScroll, Direction directionToReach) {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
@@ -639,21 +558,13 @@ public class BasePage {
                 jsDriver.executeScript("mobile: scroll", ImmutableMap.of("direction", directionToReach.toString().toLowerCase()));
                 counter++;
             }
-            logger.debug("performed scroll");
+            System.out.println("performed scroll");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not scroll", e);
+            System.out.println("Exception reached: Could not scroll"+ e);
             throw e;
         }
     }
 
-    /**
-     * Perform scroll with given coordinates
-     * @param startx int
-     * @param starty int
-     * @param endx int
-     * @param endy int
-     *
-     */
     public void scrollByCoordinates(int startx, int starty, int endx, int endy) {
         try {
             Sequence scroll = new Sequence(finger, 0);
@@ -663,18 +574,13 @@ public class BasePage {
             scroll.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(List.of(scroll));
             hardWait(2000);
-            logger.debug("performed scroll/swipe by coordinates");
+            System.out.println("performed scroll/swipe by coordinates");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not scroll/swipe by coordinates", e);
+            System.out.println("Exception reached: Could not scroll/swipe by coordinates"+ e);
             throw e;
         }
     }
 
-    /**
-     * get screen coordinates for full scrolling
-     * @param direction Enum
-     *
-     */
     private HashMap<String, Integer> getScreenScrollPositions(Direction directionToReach) {
         HashMap<String, Integer> coordMap = new HashMap<>();
         int screenWidth, screenHeight;
@@ -711,12 +617,6 @@ public class BasePage {
         return coordMap;
     }
 
-    /**
-     * Perform scroll till end of screen in specified direction
-     * @param direction Enum
-     * @param element WebElement
-     *
-     */
     public void scrollTillEnd(int numberOfTimesToScroll, Direction directionToReach) {
         int startx, endx, starty, endy;
         try {
@@ -729,19 +629,13 @@ public class BasePage {
                 scrollByCoordinates(startx, starty, endx, endy);
                 timeout++;
             }
-            logger.debug("performed scroll for element into view");
+            System.out.println("performed scroll for element into view");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not scroll for element", e);
+            System.out.println("Exception reached: Could not scroll for element"+ e);
             throw e;
         }
     }
 
-    /**
-     * Perform scroll till element in view in given direction
-     * @param direction Enum
-     * @param element WebElement
-     *
-     */
     public void scrollTillElementIntoView(By locator, int numberOfTimesToScroll, Direction directionToReach) {
         int startx, endx, starty, endy;
         startx = getScreenScrollPositions(directionToReach).get("startx");
@@ -754,19 +648,13 @@ public class BasePage {
                 scrollByCoordinates(startx, starty, endx, endy);
                 timeout++;
             }
-            logger.debug("performed scroll for element into view");
+            System.out.println("performed scroll for element into view");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not scroll for element", e);
+            System.out.println("Exception reached: Could not scroll for element"+ e);
             throw e;
         }
     }
 
-    /**
-     * Perform swipe on an element in given direction
-     * @param direction Enum
-     * @param element WebElement
-     *
-     */
     public void swipeOnElement(Direction directionToReach, WebElement element) {
         try {
             int startx, starty, endx, endy;
@@ -804,56 +692,40 @@ public class BasePage {
                     throw new IllegalArgumentException("Invalid swipe direction: " + directionToReach);
             }
             scrollByCoordinates(startx, starty, endx, endy);
-            logger.debug("performed swipe on element");
+            System.out.println("performed swipe on element");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not perform swipe on element", e);
+            System.out.println("Exception reached: Could not perform swipe on element"+ e);
             throw e;
         }
     }
 
-    /**
-     * swipe on element with locator and direction
-     *
-     * @param locator
-     */
     protected void swipeOnElement(Direction directionToReach, By locator) {
         swipeOnElement(directionToReach, getElement(locator));
     }
 
-    /**
-     * Perform tap with given coordinates
-     * @param xcoordinate int
-     * @param ycoordinate int
-     *
-     */
     public void tapByCoordinates(int x, int y) {
         try {
             Sequence tap = new Sequence(finger, 1);
             tap.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), x, y));
             tap.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
             tap.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-            driver.perform(Arrays.asList(tap));
-            logger.debug("performed tap by coordinates");
+            driver.perform(List.of(tap));
+            System.out.println("performed tap by coordinates");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not tap by coordinates", e);
+            System.out.println("Exception reached: Could not tap by coordinates"+ e);
             throw e;
         }
     }
 
-    /**
-     * Perform tap at middle of the screen
-     * @param xcoordinate int
-     * @param ycoordinate int
-     *
-     */
+
     public void tapOnMidOfScreen() {
         try {
             int x = driver.manage().window().getSize().getWidth() / 2;
             int y = driver.manage().window().getSize().getHeight() / 2;
             tapByCoordinates(x, y);
-            logger.debug("performed tap on screen");
+            System.out.println("performed tap on screen");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not tap on screen", e);
+            System.out.println("Exception reached: Could not tap on screen"+ e);
             throw e;
         }
     }
@@ -870,9 +742,9 @@ public class BasePage {
             int centerX = sourceLocation.getX() + sourceSize.getWidth() / 2;
             int centerY = sourceLocation.getY() + sourceSize.getHeight() / 2;
             tapByCoordinates(centerX, centerY);
-            logger.debug("performed tap on element");
+            System.out.println("performed tap on element");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not tap on element", e);
+            System.out.println("Exception reached: Could not tap on element"+ e);
             throw e;
         }
     }
@@ -908,9 +780,9 @@ public class BasePage {
             doubleTap.addAction(new Pause(finger, Duration.ofMillis(100)));
             doubleTap.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(List.of(doubleTap));
-            logger.debug("performed double tap on element");
+            System.out.println("performed double tap on element");
         } catch(Exception e) {
-            logger.error("Exception reached: Could not perform double tap on element", e);
+            System.out.println("Exception reached: Could not perform double tap on element"+ e);
             throw e;
         }
     }
@@ -949,9 +821,9 @@ public class BasePage {
                     PointerInput.Origin.viewport(),centerX2, centerY2));
             dragNDrop.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(List.of(dragNDrop));
-            logger.debug("Dragged source element to destination element");
+            System.out.println("Dragged source element to destination element");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not drag source element to destination element", e);
+            System.out.println("Exception reached: Could not drag source element to destination element"+ e);
             throw e;
         }
     }
@@ -965,18 +837,12 @@ public class BasePage {
         dragAndDrop(getElement(sourceLocator), getElement(destinationLocator));
     }
 
-    /**
-     * gets driver page source
-     *
-     * @param locator
-     * @return text
-     */
     public void getPageSource() {
         try {
             System.out.println(driver.getPageSource());
             hardWait(2000);
         } catch(Exception e) {
-            logger.error("Exception reached: Could not get page source", e);
+            System.out.println("Exception reached: Could not get page source"+ e);
             throw e;
         }
     }
@@ -989,9 +855,9 @@ public class BasePage {
     protected void hoverOnElement(WebElement element) {
         try {
             new Actions(driver).moveToElement(element).build().perform();
-            logger.debug("hovered on element");
+            System.out.println("hovered on element");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not hover on element", e);
+            System.out.println("Exception reached: Could not hover on element"+ e);
             throw e;
         }
     }
@@ -1013,11 +879,11 @@ public class BasePage {
             new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().accept();
         } catch (TimeoutException e) {
-            logger.warn("Timed out, alert not present", e);
+            System.out.println("Timed out, alert not present"+ e);
         } catch (NoAlertPresentException e) {
-            logger.warn("No Alert present", e);
+            System.out.println("No Alert present"+ e);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not confirm on alert", e);
+            System.out.println("Exception reached: Could not confirm on alert"+ e);
             throw e;
         }
     }
@@ -1030,11 +896,11 @@ public class BasePage {
             new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().dismiss();;
         } catch (TimeoutException e) {
-            logger.warn("Timed out, alert not present", e);
+            System.out.println("Timed out, alert not present"+ e);
         } catch (NoAlertPresentException e) {
-            logger.warn("No Alert present", e);
+            System.out.println("No Alert present"+ e);
         } catch (Exception e) {
-            logger.error("Exception reached: Could not confirm on alert", e);
+            System.out.println("Exception reached: Could not confirm on alert"+ e);
             throw e;
         }
     }
@@ -1058,7 +924,7 @@ public class BasePage {
             request.connect();
             responseCode = request.getResponseCode();
         } catch (IOException e) {
-            logger.error("Exception reached: Could not get url response", e);
+            System.out.println("Exception reached: Could not get url response"+ e);
         }
         return responseCode;
     }
@@ -1075,9 +941,9 @@ public class BasePage {
                 JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
                 jsDriver.executeScript("mobile: pressButton", ImmutableMap.of("name", "home"));
             }
-            logger.debug("tapped on device home");
+            System.out.println("tapped on device home");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not hit home", e);
+            System.out.println("Exception reached: Could not hit home"+ e);
             throw e;
         }
     }
@@ -1094,9 +960,9 @@ public class BasePage {
                 JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
                 jsDriver.executeScript("mobile: pressButton", ImmutableMap.of("name", "home"));
             }
-            logger.debug("tapped on device home");
+            System.out.println("tapped on device home");
         } catch (Exception e) {
-            logger.error("Exception reached: Could not hit home", e);
+            System.out.println("Exception reached: Could not hit home"+ e);
             throw e;
         }
     }
@@ -1106,7 +972,7 @@ public class BasePage {
         try {
             list = Stream.of(stringToChange.split(delimeter, -1)).collect(Collectors.toList());
         } catch(Exception e) {
-            logger.error("Exception reached: Could not split string to list " + stringToChange + " with delimeter " + delimeter, e);
+            System.out.println("Exception reached: Could not split string to list " + stringToChange + " with delimeter " + delimeter + e.getMessage());
             throw e;
         }
         return list;
@@ -1118,7 +984,7 @@ public class BasePage {
             for (String string : listToChange)
                 map.put(string.split(delimeter)[0], string.split(delimeter)[1]);
         } catch(Exception e) {
-            logger.error("Exception reached: Could not split list to map " + listToChange + " with delimeter " + delimeter, e);
+            System.out.println("Exception reached: Could not split list to map " + listToChange + " with delimeter " + delimeter +" "+ e);
             throw e;
         }
         return map;
@@ -1126,13 +992,6 @@ public class BasePage {
 
     // Math operations
 
-    /**
-     * to truncate the double value to a particular decimal point
-     * @author Arzoo Hingorani
-     * @param value [double] : The double value you want to truncate
-     * @param decimalpoint [int] :  Upto what decimal point you want it to truncate
-     * @return double truncated value
-     */
     public double truncateUptoParticularDecimalPoint(double value, int decimalpoint)
     {
         double updatedValue=0.0;
@@ -1142,7 +1001,7 @@ public class BasePage {
             updatedValue = updatedValue / Math.pow(10, decimalpoint);
 
         } catch (Exception e) {
-            logger.error("Exception reached: Could not truncate value upto decimal point as expected due to - ", e);
+            System.out.println("Exception reached: Could not truncate value upto decimal point as expected due to - "+ e);
         }
         return updatedValue;
     }
@@ -1165,7 +1024,7 @@ public class BasePage {
                 return matcher.group(1);
 
         } catch (Exception e) {
-            logger.debug("Failed to get text matching the given pattern due to exception " + e.getMessage());
+            System.out.println("Failed to get text matching the given pattern due to exception " + e.getMessage());
         }
         return null;
     }
@@ -1186,7 +1045,7 @@ public class BasePage {
                 return true;
 
         } catch (Exception e) {
-            logger.debug("Failed to validate whether the text is matching the given pattern or not, due to exception " + e.getMessage());
+            System.out.println("Failed to validate whether the text is matching the given pattern or not, due to exception " + e.getMessage());
         }
         return false;
     }

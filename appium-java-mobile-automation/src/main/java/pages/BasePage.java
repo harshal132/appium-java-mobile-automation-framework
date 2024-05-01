@@ -268,7 +268,7 @@ public class BasePage {
             if (getElementsCount(locator) > 0) {
                 boolean isDisplayed = getElement(locator).isDisplayed();
                 System.out.println("Got isDisplayed value as: " + isDisplayed);
-                return !(shouldBeDisplayed ^ isDisplayed);
+                return shouldBeDisplayed == isDisplayed;
             } else {
                 System.out.println("Got element count value as equal to 0");
                 if (!shouldBeDisplayed)
@@ -287,7 +287,7 @@ public class BasePage {
         try {
             boolean isDisplayed = element.isDisplayed();
             System.out.println("Got isDisplayed value as: " + isDisplayed);
-            return !(shouldBeDisplayed ^ isDisplayed);
+            return shouldBeDisplayed == isDisplayed;
         } catch (Exception e) {
             System.out.println("Exception reached: Could not get element is displayed status"+ e);
             throw e;
@@ -298,8 +298,6 @@ public class BasePage {
     public void hardWait(long timeInMilliSeconds) {
         try {
             Thread.sleep(timeInMilliSeconds);
-        } catch (InterruptedException e) {
-            System.out.println("Exception reached: Could not add hardwait"+ e);
         } catch (Exception e) {
             System.out.println("Exception reached: Could not add hardwait"+ e);
         }
@@ -383,9 +381,6 @@ public class BasePage {
         return element;
     }
 
-    /**
-     * waits for screen to load
-     */
     public void waitForScreenToLoad() {
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(10000));
@@ -409,9 +404,9 @@ public class BasePage {
 
     public ImmutableMap<String, String> getAppId() {
         if(BaseTest.isAndroidTest())
-            return ImmutableMap.of("appId", (String) MobileDriverFactory.capabilities.getCapability(AndroidMobileCapabilityType.APP_PACKAGE));
+            return ImmutableMap.of("appId", (String) MobileDriverFactory.capabilities.getCapability("appium:appPackage"));
         else
-            return ImmutableMap.of("bundleId", (String) MobileDriverFactory.capabilities.getCapability(IOSMobileCapabilityType.BUNDLE_ID));
+            return ImmutableMap.of("bundleId", (String) MobileDriverFactory.capabilities.getCapability("appium:bundleId"));
     }
 
     public void jsIosResetLocationPermission() {
@@ -425,10 +420,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * terminates app and clears cache
-     *
-     */
     public void jsTerminateAppClearingCache() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
@@ -440,10 +431,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * puts app into background
-     *
-     */
     public void jsPutAppInBackground() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
@@ -455,10 +442,6 @@ public class BasePage {
         };
     }
 
-    /**
-     * activates app from background without clearing cache
-     *
-     */
     public void jsActivateAppithoutClearingCache() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
@@ -470,10 +453,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * activates app after closing and clearing cache
-     *
-     */
     public void jsCloseAndlaunchAppClearingCache() {
         try {
             jsTerminateAppClearingCache();
@@ -485,10 +464,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * launch app without clearing cache
-     *
-     */
     public void jsLaunchAppWithoutClearingCache() {
         try {
             hardWait(2000);
@@ -502,10 +477,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * check if app is installed
-     *
-     */
     public boolean jsIsAppInstalled() {
         boolean isInstalled = false;
         try {
@@ -587,32 +558,31 @@ public class BasePage {
         screenWidth = driver.manage().window().getSize().getWidth();
         screenHeight = driver.manage().window().getSize().getHeight();
         switch (directionToReach) {
-            case UP:
+            case UP -> {
                 coordMap.put("startx", screenWidth / 2);
                 coordMap.put("starty", (int) (screenHeight * 0.12));
                 coordMap.put("endx", screenWidth / 2);
                 coordMap.put("endy", (int) (screenHeight * 0.85));
-                break;
-            case DOWN:
+            }
+            case DOWN -> {
                 coordMap.put("startx", screenWidth / 2);
                 coordMap.put("starty", (int) (screenHeight * 0.85));
                 coordMap.put("endx", screenWidth / 2);
                 coordMap.put("endy", (int) (screenHeight * 0.1));
-                break;
-            case LEFT:
+            }
+            case LEFT -> {
                 coordMap.put("startx", (int) (screenWidth * 0.2));
                 coordMap.put("starty", screenHeight / 2);
                 coordMap.put("endx", (int) (screenWidth * 0.8));
                 coordMap.put("endy", screenHeight / 2);
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 coordMap.put("startx", (int) (screenWidth * 0.8));
                 coordMap.put("starty", screenHeight / 2);
                 coordMap.put("endx", (int) (screenWidth * 0.2));
                 coordMap.put("endy", screenHeight / 2);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid swipe direction: " + directionToReach);
+            }
+            default -> throw new IllegalArgumentException("Invalid swipe direction: " + directionToReach);
         }
         return coordMap;
     }
@@ -664,32 +634,31 @@ public class BasePage {
             int elementWidth = element.getSize().width;
 
             switch (directionToReach) {
-                case LEFT:
+                case LEFT -> {
                     startx = elementX + (elementWidth / 5);
                     starty = elementY + (elementHeight / 2);
                     endx = elementX + (elementWidth * 3 / 4);
                     endy = starty;
-                    break;
-                case RIGHT:
+                }
+                case RIGHT -> {
                     startx = elementX + (elementWidth * 3 / 4);
                     starty = elementY + (elementHeight / 2);
                     endx = elementX + (elementWidth / 5);
                     endy = starty;
-                    break;
-                case UP:
+                }
+                case UP -> {
                     startx = elementX + (elementWidth / 2);
                     starty = elementY + (elementHeight / 4);
                     endx = startx;
                     endy = elementY + (elementHeight * 3 / 4);
-                    break;
-                case DOWN:
+                }
+                case DOWN -> {
                     startx = elementX + (elementWidth / 2);
                     starty = elementY + (elementHeight * 3 / 4);
                     endx = startx;
                     endy = elementY + (elementHeight / 4);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid swipe direction: " + directionToReach);
+                }
+                default -> throw new IllegalArgumentException("Invalid swipe direction: " + directionToReach);
             }
             scrollByCoordinates(startx, starty, endx, endy);
             System.out.println("performed swipe on element");

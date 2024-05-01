@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 import utils.JsonFileReader;
 import utils.capabilities.Emulator;
 import utils.capabilities.Real;
@@ -21,7 +20,6 @@ import utils.capabilities.Real;
 import static utils.DataLoader.getAppData;
 
 public class MobileDriverFactory {
-    protected static final String applicationData = (FilePath.REAL_APP_DATA_FILE_PATH);
     private static final String capabilitiesJson = (FilePath.REAL_CAPABILITIES_JSON_FILE_PATH);
     public static DesiredCapabilities capabilities;
 
@@ -77,32 +75,32 @@ public class MobileDriverFactory {
             capabilities.setCapability("appium:deviceName", emulatorMap.getDeviceName());
             capabilities.setCapability("platformName", emulatorMap.getPlatformName());
             if(env.isProdEnv()) {
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, emulatorMap.getAppPackageProd());
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, emulatorMap.getAppActivityProd());
+                capabilities.setCapability("appium:appPackage", emulatorMap.getAppPackageProd());
+                capabilities.setCapability("appium:appActivity", emulatorMap.getAppActivityProd());
             }
             else {
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, emulatorMap.getAppPackage());
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, emulatorMap.getAppActivity());
+                capabilities.setCapability("appium:appPackage", emulatorMap.getAppPackage());
+                capabilities.setCapability("appium:appActivity", emulatorMap.getAppActivity());
             }
             capabilities.setCapability("appium:automationName", emulatorMap.getAutomationName());
             capabilities.setCapability("appium:noReset", emulatorMap.getNoReset());
-            capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, emulatorMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:autoGrantPermissions", emulatorMap.getautoGrantPermissions());
 
         }
         else if(deviceType.isRealDevice()) {
-            capabilities.setCapability(MobileCapabilityType.UDID, realMap.getUdid());
-            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, realMap.getPlatformName());
+            capabilities.setCapability("appium:udid", realMap.getUdid());
+            capabilities.setCapability("platformName", realMap.getPlatformName());
             if(env.isProdEnv()) {
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, realMap.getAppPackageProd());
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, realMap.getAppActivityProd());
+                capabilities.setCapability("appium:appPackage", realMap.getAppPackageProd());
+                capabilities.setCapability("appium:appActivity", realMap.getAppActivityProd());
             }
             else {
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, realMap.getAppPackage());
-                capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, realMap.getAppActivity());
+                capabilities.setCapability("appium:appPackage", realMap.getAppPackage());
+                capabilities.setCapability("appium:appActivity", realMap.getAppActivity());
             }
             capabilities.setCapability("appium:automationName", realMap.getAutomationName());
-            capabilities.setCapability(MobileCapabilityType.NO_RESET, realMap.getNoReset());
-            capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, realMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:noReset", realMap.getNoReset());
+            capabilities.setCapability("appium:autoGrantPermissions", realMap.getautoGrantPermissions());
         }
         return capabilities;
 
@@ -113,35 +111,34 @@ public class MobileDriverFactory {
         Emulator emulatorMap = JsonFileReader.getCapabilitiesJson(capabilitiesJson).getIos().getEmulator();
         Real realMap = JsonFileReader.getCapabilitiesJson(capabilitiesJson).getIos().getReal();
         if(deviceType.isEmulatorDevice()) {
-            capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, emulatorMap.getDeviceName());
-            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, emulatorMap.getPlatformName());
+            capabilities.setCapability("appium:deviceName", emulatorMap.getDeviceName());
+            capabilities.setCapability("platformName", emulatorMap.getPlatformName());
 
             if(env.isProdEnv()) {
-                capabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, emulatorMap.getBundleIdProd());
+                capabilities.setCapability("appium:bundleId", emulatorMap.getBundleIdProd());
             }
             else {
-                capabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, emulatorMap.getBundleId());
+                capabilities.setCapability("appium:bundleId", emulatorMap.getBundleId());
             }
-            capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, emulatorMap.getAutomationName());
-            capabilities.setCapability(MobileCapabilityType.NO_RESET, emulatorMap.getNoReset());
-            capabilities.setCapability(IOSMobileCapabilityType.WDA_LOCAL_PORT, wdaPortNumber);
-            capabilities.setCapability(IOSMobileCapabilityType.AUTO_ACCEPT_ALERTS, emulatorMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:automationName", emulatorMap.getAutomationName());
+            capabilities.setCapability("appium:noReset", emulatorMap.getNoReset());
+            capabilities.setCapability("appium:wdaLocalPort", wdaPortNumber);
+            capabilities.setCapability("appium:autoAcceptAlerts", emulatorMap.getautoGrantPermissions());
 
         }
         else if(deviceType.isRealDevice()) {
-            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, realMap.getPlatformName());
-            capabilities.setCapability(IOSMobileCapabilityType.XCODE_CONFIG_FILE, realMap.getXcodeConfigFile());
-            capabilities.setCapability(MobileCapabilityType.UDID, realMap.getUdid());
+            capabilities.setCapability("platformName", realMap.getPlatformName());
+            capabilities.setCapability("appium:udid", realMap.getUdid());
             if(env.isProdEnv()) {
-                capabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, realMap.getBundleIdProd());
+                capabilities.setCapability("appium:bundleId", realMap.getBundleIdProd());
             }
             else {
-                capabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, realMap.getBundleId());
+                capabilities.setCapability("appium:bundleId", realMap.getBundleId());
             }
-            capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, realMap.getAutomationName());
-            capabilities.setCapability(MobileCapabilityType.NO_RESET, realMap.getNoReset());
-            capabilities.setCapability(IOSMobileCapabilityType.WDA_LOCAL_PORT, wdaPortNumber);
-            //capabilities.setCapability(IOSMobileCapabilityType.AUTO_ACCEPT_ALERTS, realMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:automationName", realMap.getAutomationName());
+            capabilities.setCapability("appium:noReset", realMap.getNoReset());
+            capabilities.setCapability("appium:wdaLocalPort", wdaPortNumber);
+            capabilities.setCapability("appium:autoAcceptAlerts", realMap.getautoGrantPermissions());
         }
         return capabilities;
 

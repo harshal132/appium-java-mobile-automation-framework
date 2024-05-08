@@ -3,7 +3,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Objects;
-
 import common.constants.*;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -15,7 +14,6 @@ import io.appium.java_client.ios.IOSDriver;
 import utils.JsonFileReader;
 import utils.capabilities.Emulator;
 import utils.capabilities.Real;
-
 import static utils.DataLoader.getAppData;
 
 public class MobileDriverFactory {
@@ -36,9 +34,7 @@ public class MobileDriverFactory {
                     driver = driverType.isRemoteDriver() ? getRemoteDriverInstance(capabilities, env)
                             : new IOSDriver(new URL(serverUrl), capabilities);
                 } else
-                    throw new RuntimeException(
-                            "Platform name is not ios | android: "
-                                    + platformName);
+                    throw new RuntimeException("Platform name is not ios | android: "+ platformName);
             } else
                 throw new RuntimeException("Driver type is not remote or local: " + driverType);
         } else if (driverType == null)
@@ -72,6 +68,7 @@ public class MobileDriverFactory {
         if(deviceType.isEmulatorDevice()) {
             capabilities.setCapability("appium:deviceName", emulatorMap.getDeviceName());
             capabilities.setCapability("platformName", emulatorMap.getPlatformName());
+            capabilities.setCapability("appium:platformVersion", emulatorMap.getPlatformVersion());
             if(env.isProdEnv()) {
                 capabilities.setCapability("appium:appPackage", emulatorMap.getAppPackageProd());
                 capabilities.setCapability("appium:appActivity", emulatorMap.getAppActivityProd());
@@ -82,12 +79,13 @@ public class MobileDriverFactory {
             }
             capabilities.setCapability("appium:automationName", emulatorMap.getAutomationName());
             capabilities.setCapability("appium:noReset", emulatorMap.getNoReset());
-            capabilities.setCapability("appium:autoGrantPermissions", emulatorMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:autoGrantPermissions", emulatorMap.getAutoGrantPermissions());
 
         }
         else if(deviceType.isRealDevice()) {
             capabilities.setCapability("appium:udid", realMap.getUdid());
             capabilities.setCapability("platformName", realMap.getPlatformName());
+            capabilities.setCapability("appium:platformVersion", realMap.getPlatformVersion());
             if(env.isProdEnv()) {
                 capabilities.setCapability("appium:appPackage", realMap.getAppPackageProd());
                 capabilities.setCapability("appium:appActivity", realMap.getAppActivityProd());
@@ -98,7 +96,7 @@ public class MobileDriverFactory {
             }
             capabilities.setCapability("appium:automationName", realMap.getAutomationName());
             capabilities.setCapability("appium:noReset", realMap.getNoReset());
-            capabilities.setCapability("appium:autoGrantPermissions", realMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:autoGrantPermissions", realMap.getAutoGrantPermissions());
         }
         return capabilities;
 
@@ -121,7 +119,7 @@ public class MobileDriverFactory {
             capabilities.setCapability("appium:automationName", emulatorMap.getAutomationName());
             capabilities.setCapability("appium:noReset", emulatorMap.getNoReset());
             capabilities.setCapability("appium:wdaLocalPort", wdaPortNumber);
-            capabilities.setCapability("appium:autoAcceptAlerts", emulatorMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:autoAcceptAlerts", emulatorMap.getAutoGrantPermissions());
 
         }
         else if(deviceType.isRealDevice()) {
@@ -136,7 +134,7 @@ public class MobileDriverFactory {
             capabilities.setCapability("appium:automationName", realMap.getAutomationName());
             capabilities.setCapability("appium:noReset", realMap.getNoReset());
             capabilities.setCapability("appium:wdaLocalPort", wdaPortNumber);
-            capabilities.setCapability("appium:autoAcceptAlerts", realMap.getautoGrantPermissions());
+            capabilities.setCapability("appium:autoAcceptAlerts", realMap.getAutoGrantPermissions());
         }
         return capabilities;
 

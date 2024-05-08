@@ -2,21 +2,20 @@ package utils.capabilities;
 
 public class Real {
     private String deviceName;
+    private String udid;
     private String platformName;
     private String platformVersion;
+    private String automationName;
     private String app;
     private String appPackage;
     private String appActivity;
     private String appPackageProd;
     private String appActivityProd;
-    private boolean noReset;
-    private String automationName;
     private String bundleId;
     private String bundleIdProd;
-    private String orientation;
-    private String xcodeConfigFile;
-    private String udid;
+    private boolean noReset;
     private boolean fullReset;
+    private String orientation;
     private String autoGrantPermissions;
 
     public String getPlatformName() {
@@ -103,22 +102,16 @@ public class Real {
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
-    public String getXcodeConfigFile() {
-        return xcodeConfigFile;
-    }
-    public void setXcodeConfigFile(String xcodeConfigFile) {
-        this.xcodeConfigFile = xcodeConfigFile;
-    }
     public String getUdid() {
         return udid;
     }
     public void setUdid(String udid) {
         this.udid = udid;
     }
-    public String getautoGrantPermissions() {
+    public String getAutoGrantPermissions() {
         return autoGrantPermissions;
     }
-    public void setautoGrantPermissions(String autoGrantPermissions) {
+    public void setAutoGrantPermissions(String autoGrantPermissions) {
         this.autoGrantPermissions = autoGrantPermissions;
     }
 }

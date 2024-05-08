@@ -2,17 +2,16 @@ package tests;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
 import common.constants.*;
-import common.listener.TestListner;
+import common.listener.TestListener;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-import org.apache.commons.io.FileUtils;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utils.DataLoader;
 import utils.ExtentTestManager;
 import java.lang.reflect.Method;
 
+@Listeners(TestListener.class)
 public class BaseTest {
     protected final String applicationData = (FilePath.REAL_APP_DATA_FILE_PATH);
     private static final ThreadLocal<AppiumDriver> threadLocalDriver = new ThreadLocal<>();
@@ -34,20 +33,16 @@ public class BaseTest {
 
     @Parameters({ "Platform", "Emulator", "Port", "WdaPort" })
     @BeforeTest(alwaysRun = true)
-    public void setUpAppium(@Optional("ios") String platform, @Optional("real") String testDeviceType, @Optional("4723") String portNumber, @Optional("8100") String wdaPort) throws Exception {
+    public void setUpAppium(@Optional("android") String platform, @Optional("real") String testDeviceType, @Optional("4723") String portNumber, @Optional("8100") String wdaPort, Method method) throws Exception {
         platformName = Platform.get(platform);
         deviceType = DeviceType.get(testDeviceType);
         System.out.println("Test running on platform: " + platform);
         System.out.println("Test running on device type: " + testDeviceType);
         appiumServerUrl = "http://" + DataLoader.getAppData(applicationData, "appiumLocalIp") + ":" + portNumber + "/";
         wdaPortNumber = wdaPort;
-    }
 
-    @BeforeMethod(alwaysRun = true)
-    public void setUpDriver(Method method) throws Exception {
         AppiumDriver driver = MobileDriverFactory.getAppiumDriver(testEnvType, driverType, platformName, deviceType, appiumServerUrl, wdaPortNumber);
         setDriver(driver);
-        System.out.println("Before Test: " + method.getName() + " with Thread ID: " + Thread.currentThread().getId());
     }
 
     public static void setDriver(AppiumDriver driver) {
@@ -67,22 +62,19 @@ public class BaseTest {
         if (getDriver() != null) {
             if(!result.isSuccess()) {
                 try {
-                    ExtentTestManager.getTest().fail(result.getName() + " Test Failed due to exception: " + result.getThrowable() + "<br>Final screenshot: ", MediaEntityBuilder.createScreenCaptureFromBase64String(TestListner.takeScreenShot()).build());
+                    ExtentTestManager.getTest().fail(result.getName() + " Test Failed due to exception: " + result.getThrowable() + "<br>Final screenshot: ", MediaEntityBuilder.createScreenCaptureFromBase64String(TestListener.takeScreenShot()).build());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 System.out.println(result.getName() + " Test has failed");
+                System.out.println("After Test: " + result.getName() + " with Thread ID: " + Thread.currentThread().getId());
             }
-            getDriver().quit();
-            System.out.println("After Test: " + result.getName() + " with Thread ID: " + Thread.currentThread().getId());
-            removeDriver();
         }
     }
-
     @AfterTest(alwaysRun = true)
     public void stopAppium() {
-        //		AppiumServerManager.stopAppiumServer();
-        //		AppiumServerProcessManager.stopServerProcess();
+        getDriver().quit();
+        removeDriver();
     }
 
     public static boolean isQaTest() {

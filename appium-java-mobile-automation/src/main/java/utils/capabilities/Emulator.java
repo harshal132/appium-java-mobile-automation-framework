@@ -108,10 +108,10 @@ public class Emulator {
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
-    public String getautoGrantPermissions() {
+    public String getAutoGrantPermissions() {
         return autoGrantPermissions;
     }
-    public void setautoGrantPermissions(String autoGrantPermissions) {
+    public void setAutoGrantPermissions(String autoGrantPermissions) {
         this.autoGrantPermissions = autoGrantPermissions;
     }
 }

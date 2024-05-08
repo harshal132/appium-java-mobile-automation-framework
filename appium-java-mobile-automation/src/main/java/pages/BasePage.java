@@ -1,5 +1,7 @@
 package pages;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableMap;
 import common.constants.FilePath;
 import config.MobileDriverFactory;
@@ -17,6 +19,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import tests.BaseTest;
+import utils.ExtentTestManager;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -998,13 +1003,6 @@ public class BasePage {
         return null;
     }
 
-    /**
-     * validates whether the text is matching with the provided pattern using Regular Expression
-     * @author Arzoo Hingorani
-     * @param patternToFindMatch [String] : Regex pattern
-     * @param textToBeMatched [String] : The text in which a pattern is to be found
-     * @return boolean true if a matching text as per the pattern is found successfully
-     */
     public boolean validateTextIsMatchingWithPatternUsingRegex(String patternToFindMatch, String textToBeMatched) {
         try {
             Pattern pattern = Pattern.compile(patternToFindMatch);
@@ -1034,5 +1032,39 @@ public class BasePage {
         else{
             ((AndroidDriver) driver).activateApp(getAppId().get("appId"));
         }
+    }
+
+    public static void logTestStep(String description) {
+        try{
+            ExtentTestManager.getTest().log(Status.INFO,description, MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshot()).build());
+        }catch(IOException e){
+            System.out.println("Failed to capture screenshot"+e.getMessage());
+        }
+    }
+
+    public static void logTestStep(String description, By locator) {
+        try{
+            ExtentTestManager.getTest().log(Status.INFO,description, MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshotOfElement(locator)).build());
+        }catch(IOException e){
+            System.out.println("Failed to capture screenshot"+e.getMessage());
+        }
+    }
+
+    public static String takeScreenshot() throws IOException {
+        File screenshotFile = ((TakesScreenshot) BaseTest.getDriver()).getScreenshotAs(OutputType.FILE);
+        FileInputStream fileInputStream = new FileInputStream(screenshotFile);
+        byte[] bytes = new byte[(int) screenshotFile.length()];
+        fileInputStream.read(bytes);
+        fileInputStream.close();
+        return new String(Base64.getEncoder().encode((bytes)));
+    }
+
+    public static String takeScreenshotOfElement(By locator) throws IOException {
+        File screenshotFile = ((TakesScreenshot) BaseTest.getDriver().findElement(locator)).getScreenshotAs(OutputType.FILE);
+        FileInputStream fileInputStream = new FileInputStream(screenshotFile);
+        byte[] bytes = new byte[(int) screenshotFile.length()];
+        fileInputStream.read(bytes);
+        fileInputStream.close();
+        return new String(Base64.getEncoder().encode((bytes)));
     }
 }

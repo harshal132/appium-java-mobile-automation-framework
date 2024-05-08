@@ -1,17 +1,16 @@
 {
-  "android":
-  {
+  "android": {
     "real": {
-      "udid" : "R5CRC1G6HDZ",
+      "udid" : "RF8M3206JKF",
       "platformName": "android",
-      "platformVersion":"30",
-      "app": "/Users/sneha/Documents/xcodeDummy/iostest/build/Release-iphonesimulator/iostest.app",
-      "appPackage": "com.tejuri.app.walifStaging",
-      "appActivity": "com.pindubai.app.walif.activities.SplashActivity_",
-      "appPackageProd": "com.tejuri.app.walif",
-      "appActivityProd": "com.pindubai.app.walif.activities.SplashActivity_",
-      "noReset": false,
-      "automationName": "uiAutomator2",
+      "platformVersion":"11",
+      "appPackage": "com.hidubai.businessapp.qa",
+      "appActivity": "com.hidubai.businessapp.presentation.MainActivity",
+      "appPackageProd": "com.hidubai.businessapp.prod",
+      "appActivityProd": "com.hidubai.businessapp.presentation.MainActivity",
+      "noReset": true,
+      "fullReset": false,
+      "automationName": "uiautomator2",
       "orientation": "portrait",
       "autoGrantPermissions": true
     },
@@ -25,13 +24,12 @@
       "appPackageProd": "com.tejuri.app.walif",
       "appActivityProd": "com.pindubai.app.walif.activities.SplashActivity_",
       "noReset": false,
-      "automationName": "uiAutomator2",
+      "automationName": "uiautomator2",
       "orientation": "portrait",
       "autoGrantPermissions": true
     }
   },
-  "ios":
-  {
+  "ios": {
     "real": {
       "udid" : "00008110-001644D83C81801E",
       "platformName": "iOS",

@@ -1,4 +1,4 @@
-implicitTimeOut: 3000
+implicitWaitTime: 3000
 
 waitTime:
   small: 2000

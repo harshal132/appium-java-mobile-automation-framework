@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.Objects;
 
 import common.constants.*;
-import io.appium.java_client.remote.MobilePlatform;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -24,7 +23,6 @@ public class MobileDriverFactory {
     public static DesiredCapabilities capabilities;
 
     public static AppiumDriver getAppiumDriver(Environment env, DriverType driverType, Platform platformName, DeviceType deviceType, String serverUrl, String wdaPortNumber) throws Exception {
-
         AppiumDriver driver = null;
         capabilities = new DesiredCapabilities();
         if (driverType != null && platformName != null) {

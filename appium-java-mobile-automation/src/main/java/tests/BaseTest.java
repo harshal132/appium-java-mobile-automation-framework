@@ -5,6 +5,7 @@ import common.constants.*;
 import common.listener.TestListner;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.io.FileUtils;
 import org.testng.ITestResult;
 import org.testng.annotations.*;

@@ -5,8 +5,10 @@ import common.constants.*;
 import common.listener.TestListener;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.Capabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import pages.BasePage;
 import utils.DataLoader;
 import utils.ExtentTestManager;
 import java.lang.reflect.Method;
@@ -42,6 +44,7 @@ public class BaseTest {
         wdaPortNumber = wdaPort;
 
         AppiumDriver driver = MobileDriverFactory.getAppiumDriver(testEnvType, driverType, platformName, deviceType, appiumServerUrl, wdaPortNumber);
+        new BasePage(driver).launchApp();
         setDriver(driver);
     }
 

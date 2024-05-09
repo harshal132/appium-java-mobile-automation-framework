@@ -1,9 +1,9 @@
 {
   "android": {
     "real": {
-      "udid" : "RF8M3206JKF",
+      "udid" : "R5CW31BYA2V",
       "platformName": "android",
-      "platformVersion":"11",
+      "platformVersion":"13",
       "appPackage": "com.hidubai.businessapp.qa",
       "appActivity": "com.hidubai.businessapp.presentation.MainActivity",
       "appPackageProd": "com.hidubai.businessapp.prod",
@@ -33,10 +33,11 @@
     "real": {
       "udid" : "00008110-001644D83C81801E",
       "platformName": "iOS",
-      "platformVersion":"15.1",
-      "bundleId": "com.tejuri.app.walif-staging",
-      "bundleIdProd": "com.tejuri.app.walif",
-      "noReset": false,
+      "platformVersion":"17.4.1",
+      "bundleId": "com.hidubai.businessapp-qa",
+      "bundleIdProd": "com.hidubai.businessapp-prod",
+      "noReset": true,
+      "fullReset": false,
       "automationName": "XCUITest",
       "autoGrantPermissions": true
     },

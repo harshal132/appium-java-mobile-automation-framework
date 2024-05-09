@@ -3,7 +3,6 @@ package pages;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableMap;
-import common.constants.FilePath;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -24,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
@@ -34,8 +34,8 @@ import java.util.stream.Stream;
 
 public class BasePage {
     protected AppiumDriver driver;
+    public static String isLoggedIn;
     PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-    protected final String applicationData = (FilePath.REAL_APP_DATA_FILE_PATH);
 
     public BasePage(AppiumDriver driver) {
         this.driver = driver;
@@ -260,13 +260,6 @@ public class BasePage {
         return count;
     }
 
-    /**
-     * checks if element is displayed
-     *
-     * @param shouldBeDisplayed
-     * @param locator
-     * @return isDisplayed
-     */
     protected boolean isDisplayed(boolean shouldBeDisplayed, By locator) {
         try {
 
@@ -704,11 +697,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Perform tap on an element
-     * @param element WebElement
-     *
-     */
     public void tapOnElement(WebElement element) {
         try {
             Point sourceLocation = element.getLocation();
@@ -723,20 +711,10 @@ public class BasePage {
         }
     }
 
-    /**
-     * tap on element with locator
-     *
-     * @param locator
-     */
     protected void tapOnElement(By locator) {
         tapOnElement(getElement(locator));
     }
 
-    /**
-     * Perform double tap on an element
-     * @param element WebElement
-     *
-     */
     public void doubleTapOnElement(WebElement element) {
         try {
             Point sourceLocation = element.getLocation();
@@ -761,20 +739,11 @@ public class BasePage {
         }
     }
 
-    /**
-     * double tap on element with locator
-     *
-     * @param locator
-     */
     protected void doubleTapOnElement(By locator) {
         doubleTapOnElement(getElement(locator));
     }
 
-    /**
-     * drags an element from source to destination
-     * @param sourceElement [WebElement] : WebElement information for the element to be dragged as source
-     * @param destinationElement [WebElement] : WebElement information to the destination where the element is dropped
-     */
+
     protected void dragAndDrop(WebElement sourceElement, WebElement destinationElement) {
         try {
             Point sourceLocation = sourceElement.getLocation();
@@ -802,11 +771,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * drags an element from source to destination
-     * @param sourceLocator [By] : Locator information for the element to be dragged as source
-     * @param destinationLocator [By] : Locator information to the destination where the element is dropped
-     */
     protected void dragAndDrop(By sourceLocator, By destinationLocator) {
         dragAndDrop(getElement(sourceLocator), getElement(destinationLocator));
     }
@@ -821,11 +785,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * hover on element
-     *
-     * @param element
-     */
     protected void hoverOnElement(WebElement element) {
         try {
             new Actions(driver).moveToElement(element).build().perform();
@@ -836,18 +795,10 @@ public class BasePage {
         }
     }
 
-    /**
-     * hover on element
-     *
-     * @param locator
-     */
     protected void hoverOnElement(By locator) {
         hoverOnElement(getElement(locator));
     }
 
-    /**
-     * accepts alert
-     */
     public void acceptAlertIfPresent() {
         try {
             new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
@@ -862,9 +813,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * dismisses alert
-     */
     public void dismissAlertIfPresent() {
         try {
             new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
@@ -879,14 +827,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * get https response code after sending request
-     *
-     * @param urlString
-     * @param method
-     *
-     * @return responseCode
-     */
     public int getHttpResponseCode(String urlString, String method) {
         URL url;
         HttpURLConnection request;
@@ -903,10 +843,6 @@ public class BasePage {
         return responseCode;
     }
 
-    /**
-     * emulates hitting device home
-     *
-     */
     public void tapDeviceHomeButton() {
         try {
             if(BaseTest.isAndroidTest())
@@ -922,10 +858,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * emulates pressing button
-     *
-     */
     public void pressButton() {
         try {
             if(BaseTest.isAndroidTest())
@@ -1025,7 +957,7 @@ public class BasePage {
         scrollByCoordinates(anchor,startPoint,anchor,endPoint);
     }
 
-    public void relaunchAppFromBackground(){
+    public void launchApp(){
         if(BaseTest.isIosTest()){
             ((IOSDriver) driver).activateApp(getAppId().get("bundleId"));
         }
@@ -1066,5 +998,16 @@ public class BasePage {
         fileInputStream.read(bytes);
         fileInputStream.close();
         return new String(Base64.getEncoder().encode((bytes)));
+    }
+
+    public AppiumDriver launchAnotherApp(String packageName, String... activityName) throws MalformedURLException {
+        AppiumDriver newAppDriver = MobileDriverFactory.getBrowserDriver(BaseTest.getDriver().getCapabilities(), packageName, activityName);
+        if(BaseTest.isIosTest()){
+            ((IOSDriver) newAppDriver).activateApp(newAppDriver.getCapabilities().getCapability("bundleId").toString());
+        }
+        else{
+            ((AndroidDriver) newAppDriver).activateApp(newAppDriver.getCapabilities().getCapability("appPackage").toString());
+        }
+        return newAppDriver;
     }
 }

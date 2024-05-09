@@ -19,8 +19,22 @@ import static utils.DataLoader.getAppData;
 public class MobileDriverFactory {
     private static final String capabilitiesJson = (FilePath.REAL_CAPABILITIES_JSON_FILE_PATH);
     public static DesiredCapabilities capabilities;
+    public static Environment environmentValue;
+    public static DeviceType deviceTypeValue;
+    public static Platform platformNameValue;
+    public static DriverType driverTypeValue;
+    public static String serverUrlValue;
+    public static String wdaPortNumberValue;
 
     public static AppiumDriver getAppiumDriver(Environment env, DriverType driverType, Platform platformName, DeviceType deviceType, String serverUrl, String wdaPortNumber) throws Exception {
+        //
+        environmentValue = env;
+        deviceTypeValue = deviceType;
+        platformNameValue = platformName;
+        driverTypeValue = driverType;
+        serverUrlValue = serverUrl;
+        wdaPortNumberValue = wdaPortNumber;
+        //
         AppiumDriver driver = null;
         capabilities = new DesiredCapabilities();
         if (driverType != null && platformName != null) {
@@ -138,5 +152,33 @@ public class MobileDriverFactory {
         }
         return capabilities;
 
+    }
+    public static AppiumDriver getBrowserDriver(Capabilities capabilities, String browserPackage, String... activityName) throws MalformedURLException {
+        DesiredCapabilities browserCapabilities = new DesiredCapabilities();
+        browserCapabilities.merge(capabilities);
+        AppiumDriver driver = null;
+        if (driverTypeValue != null && platformNameValue != null) {
+            if (driverTypeValue.isRemoteDriver() || driverTypeValue.isLocalDriver()) {
+                if (platformNameValue.isAndroid()) {
+                    browserCapabilities.setCapability("appium:appPackage",browserPackage);
+                    if(activityName!=null){
+                        browserCapabilities.setCapability("appium:appActivity",activityName[0]);
+                    }
+                    driver = driverTypeValue.isRemoteDriver() ? getRemoteDriverInstance(browserCapabilities, environmentValue)
+                            : new AndroidDriver(new URL(serverUrlValue), browserCapabilities);
+                } else if (platformNameValue.isIos()) {
+                    browserCapabilities.setCapability("appium:udid",browserPackage);
+                    driver = driverTypeValue.isRemoteDriver() ? getRemoteDriverInstance(browserCapabilities, environmentValue)
+                            : new IOSDriver(new URL(serverUrlValue), browserCapabilities);
+                } else
+                    throw new RuntimeException("Platform name is not ios | android: "+ platformNameValue);
+            } else
+                throw new RuntimeException("Driver type is not remote or local: " + driverTypeValue);
+        } else if (driverTypeValue == null)
+            throw new RuntimeException("Driver type is null");
+        else if (platformNameValue == null)
+            throw new RuntimeException("Platform name is null");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(Objects.requireNonNull(getAppData(FilePath.REAL_APP_DATA_FILE_PATH, "implicitWaitTime")))));
+        return driver;
     }
 }

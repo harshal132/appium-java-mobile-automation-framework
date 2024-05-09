@@ -9,3 +9,9 @@ testSuiteReportName: Test Suite Execution Report
 remoteHubUrl: https://www.remote.com
 
 appiumLocalIp: 127.0.0.1
+
+chromeAppId:
+  android: com.android.chrome
+  ios: com.ios.chrome
+
+chromeAppPackage: com.google.android.apps.chrome.Main

@@ -1,0 +1,17 @@
+loginButton:
+  # QA Environment
+  qa:
+    android:
+      locatorType: id
+      value: login_button
+    ios:
+      locatorType: id
+      value: login_button
+  # PROD Environment
+  prod:
+    android:
+      locatorType: id
+      value: login_button
+    ios:
+      locatorType: id
+      value: login_button

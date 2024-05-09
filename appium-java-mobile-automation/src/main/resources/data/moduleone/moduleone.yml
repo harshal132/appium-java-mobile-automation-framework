@@ -1,0 +1,9 @@
+executeDataManagementTest:
+  qa:
+    - key1: FirstValueForKeyOne
+    - key1: SecondValueForKeyOne
+    - key1: ThreeValueForKeyOne
+  prod:
+    - key1: FirstValueForKeyOne
+    - key1: SecondValueForKeyOne
+    - key1: ThreeValueForKeyOne

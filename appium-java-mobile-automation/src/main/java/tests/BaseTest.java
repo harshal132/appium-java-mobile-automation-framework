@@ -5,10 +5,8 @@ import common.constants.*;
 import common.listener.TestListener;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.Capabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import pages.BasePage;
 import utils.DataLoader;
 import utils.ExtentTestManager;
 import java.lang.reflect.Method;
@@ -17,6 +15,7 @@ import java.lang.reflect.Method;
 public class BaseTest {
     protected final String applicationData = (FilePath.REAL_APP_DATA_FILE_PATH);
     private static final ThreadLocal<AppiumDriver> threadLocalDriver = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> loggedInState = null;
     public static Environment testEnvType;
     public static Platform platformName;
     public static DriverType driverType;
@@ -44,16 +43,24 @@ public class BaseTest {
         wdaPortNumber = wdaPort;
 
         AppiumDriver driver = MobileDriverFactory.getAppiumDriver(testEnvType, driverType, platformName, deviceType, appiumServerUrl, wdaPortNumber);
-        new BasePage(driver).launchApp();
         setDriver(driver);
+        setLoggedInState(false);
     }
 
     public static void setDriver(AppiumDriver driver) {
         threadLocalDriver.set(driver);
     }
 
+    public static void setLoggedInState(Boolean state) {
+        loggedInState.set(state);
+    }
+
     public static AppiumDriver getDriver() {
         return threadLocalDriver.get();
+    }
+
+    public static Boolean getLoggedInState() {
+        return loggedInState.get();
     }
 
     public static void removeDriver() {
@@ -74,6 +81,7 @@ public class BaseTest {
             }
         }
     }
+
     @AfterTest(alwaysRun = true)
     public void stopAppium() {
         getDriver().quit();

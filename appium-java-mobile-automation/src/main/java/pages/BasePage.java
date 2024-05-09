@@ -3,6 +3,7 @@ package pages;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableMap;
+import common.constants.FilePath;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -10,7 +11,6 @@ import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -18,13 +18,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import tests.BaseTest;
+import utils.DataLoader;
 import utils.ExtentTestManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -34,43 +33,10 @@ import java.util.stream.Stream;
 
 public class BasePage {
     protected AppiumDriver driver;
-    public static String isLoggedIn;
     PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
 
     public BasePage(AppiumDriver driver) {
         this.driver = driver;
-    }
-
-    public void openDeepLink(String appScreenName) {
-        try {
-            driver.get(appScreenName);
-            System.out.println("Naviagted to deep link");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not navigate to deep link: "+ e.getMessage());
-            throw e;
-        }
-    }
-
-    public void navigateBack() {
-        try {
-            driver.navigate().back();
-            waitForScreenToLoad();
-            System.out.println("Naviagted to back screen ");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not navigate to back screen "+ e.getMessage());
-            throw e;
-        }
-    }
-
-    public void navigateForward() {
-        try {
-            driver.navigate().forward();;
-            waitForScreenToLoad();
-            System.out.println("Naviagted to forward screen ");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not navigate to forward screen"+ e);
-            throw e;
-        }
     }
 
     protected WebElement getElement(By locator) {
@@ -143,7 +109,6 @@ public class BasePage {
         }
     }
 
-
     protected void enterText(String text, WebElement element) {
         try {
             clearText(element);
@@ -161,7 +126,7 @@ public class BasePage {
             clearText(element);
             text.chars().forEach(ch -> {
                 element.sendKeys(Character.toString((char) ch));
-                hardWait(20);
+                hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.vvsmall"));
             });
             System.out.println("Text entered on element char by char: " + text);
         } catch (Exception e) {
@@ -197,21 +162,6 @@ public class BasePage {
             System.out.println("Exception reached: Could not click by element"+ e);
             throw e;
         }
-    }
-
-    protected String getTagName(By locator) {
-        return getTagName(getElement(locator));
-    }
-
-    protected String getTagName(WebElement element) {
-        String tagName="";
-        try {
-            element.getTagName();
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not get tagName"+ e);
-            throw e;
-        }
-        return tagName;
     }
 
     protected boolean isAttributePresent(String attributeName, By locator) {
@@ -278,26 +228,6 @@ public class BasePage {
             System.out.println("Exception reached: Could not get element is displayed status"+ e);
             throw e;
 
-        }
-    }
-
-    protected boolean isDisplayedIfElementOnDom(boolean shouldBeDisplayed, WebElement element) {
-        try {
-            boolean isDisplayed = element.isDisplayed();
-            System.out.println("Got isDisplayed value as: " + isDisplayed);
-            return shouldBeDisplayed == isDisplayed;
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not get element is displayed status"+ e);
-            throw e;
-
-        }
-    }
-
-    public void hardWait(long timeInMilliSeconds) {
-        try {
-            Thread.sleep(timeInMilliSeconds);
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not add hardwait"+ e);
         }
     }
 
@@ -462,12 +392,20 @@ public class BasePage {
         }
     }
 
+    public void hardWait(String waitTime){
+        try {
+            Thread.sleep(Integer.parseInt(waitTime));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void jsLaunchAppWithoutClearingCache() {
         try {
-            hardWait(2000);
+            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
             jsDriver.executeScript("mobile: launchApp", getAppId());
-            hardWait(2000);
+            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
             System.out.println("launched app without clearing cache");
         } catch (Exception e) {
             System.out.println("Exception reached: Could not launch app"+ e);
@@ -542,7 +480,7 @@ public class BasePage {
             scroll.addAction(finger.createPointerMove(Duration.ofMillis(700), PointerInput.Origin.viewport(), endx, endy));
             scroll.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(List.of(scroll));
-            hardWait(2000);
+            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
             System.out.println("performed scroll/swipe by coordinates");
         } catch(Exception e) {
             System.out.println("Exception reached: Could not scroll/swipe by coordinates"+ e);
@@ -684,7 +622,6 @@ public class BasePage {
         }
     }
 
-
     public void tapOnMidOfScreen() {
         try {
             int x = driver.manage().window().getSize().getWidth() / 2;
@@ -778,69 +715,11 @@ public class BasePage {
     public void getPageSource() {
         try {
             System.out.println(driver.getPageSource());
-            hardWait(2000);
+            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
         } catch(Exception e) {
             System.out.println("Exception reached: Could not get page source"+ e);
             throw e;
         }
-    }
-
-    protected void hoverOnElement(WebElement element) {
-        try {
-            new Actions(driver).moveToElement(element).build().perform();
-            System.out.println("hovered on element");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not hover on element"+ e);
-            throw e;
-        }
-    }
-
-    protected void hoverOnElement(By locator) {
-        hoverOnElement(getElement(locator));
-    }
-
-    public void acceptAlertIfPresent() {
-        try {
-            new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        } catch (TimeoutException e) {
-            System.out.println("Timed out, alert not present"+ e);
-        } catch (NoAlertPresentException e) {
-            System.out.println("No Alert present"+ e);
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not confirm on alert"+ e);
-            throw e;
-        }
-    }
-
-    public void dismissAlertIfPresent() {
-        try {
-            new WebDriverWait(driver, Duration.ofMillis(8000)).until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().dismiss();;
-        } catch (TimeoutException e) {
-            System.out.println("Timed out, alert not present"+ e);
-        } catch (NoAlertPresentException e) {
-            System.out.println("No Alert present"+ e);
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not confirm on alert"+ e);
-            throw e;
-        }
-    }
-
-    public int getHttpResponseCode(String urlString, String method) {
-        URL url;
-        HttpURLConnection request;
-        int responseCode = 0;
-        try {
-            url = new URL(urlString);
-            request = (HttpURLConnection) url.openConnection();
-            request.setRequestMethod(method);
-            request.connect();
-            responseCode = request.getResponseCode();
-        } catch (IOException e) {
-            System.out.println("Exception reached: Could not get url response"+ e);
-        }
-        return responseCode;
     }
 
     public void tapDeviceHomeButton() {
@@ -913,14 +792,6 @@ public class BasePage {
     }
 
     // Regular expression operations
-
-    /**
-     * retrieve the one matching pattern using Regular Expression
-     * @author Arzoo Hingorani
-     * @param patternToFindMatch [String] : Regex pattern
-     * @param textToBeMatched [String] : The text in which a pattern is to be found
-     * @return String value of the matching text as per the pattern
-     */
     public String getTextMatchingWithPatternUsingRegex(String patternToFindMatch, String textToBeMatched) {
         try {
             Pattern pattern = Pattern.compile(patternToFindMatch);
@@ -954,6 +825,14 @@ public class BasePage {
         int anchor = (int) (size.width * 0.5);
         int startPoint = (int) (size.height * (startPercentage*0.01));
         int endPoint = (int) (size.height * (endPercentage*0.01));
+        scrollByCoordinates(anchor,startPoint,anchor,endPoint);
+    }
+
+    public void swipeScreenHorizontallyByPercentage(int startPercentage, int endPercentage){
+        Dimension size = driver.manage().window().getSize();
+        int anchor = (int) (size.height * 0.5);
+        int startPoint = (int) (size.width * (startPercentage*0.01));
+        int endPoint = (int) (size.width * (endPercentage*0.01));
         scrollByCoordinates(anchor,startPoint,anchor,endPoint);
     }
 

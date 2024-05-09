@@ -1,6 +1,8 @@
 implicitWaitTime: 3000
 
 waitTime:
+  vvsmall: 500
+  vsmall: 1000
   small: 2000
   medium: 5000
   high: 8000

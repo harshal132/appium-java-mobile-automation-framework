@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.constants.FilePath;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.yaml.snakeyaml.Yaml;
 import tests.BaseTest;
@@ -25,12 +27,12 @@ public class DataLoader {
         return (Map<String, Object>) obj.get(locatorName);
     }
 
-    public static String getAppData(String filePath, String keyName) {
+    public static String getAppData(String filePAth, String keyName) {
         Yaml yaml = new Yaml();
         InputStream inputStream = null;
         Map<String, Object> obj = null;
         try {
-            inputStream = new FileInputStream(filePath);
+            inputStream = new FileInputStream(filePAth);
             obj = yaml.load(inputStream);
 
         } catch (FileNotFoundException e) {
@@ -57,20 +59,6 @@ public class DataLoader {
         return null; // Key not found
     }
 
-    public Map<String, String> getTestData(String testName, String filePath, String keyName) {
-        Yaml yaml = new Yaml();
-        InputStream inputStream = null;
-        Map<String, HashMap<String, String>> obj = null;
-        try {
-            inputStream = new FileInputStream(filePath);
-            obj = yaml.<Map<String, HashMap<String, String>>>load(inputStream);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return obj.get(keyName);
-    }
-
     private static String getValueAfterReplacement(String locatorValue, String... replacement) {
         String[] locatorSplitArray = locatorValue.split("}", 2);
         String finalLocatorString;
@@ -89,6 +77,11 @@ public class DataLoader {
         String value;
         if(BaseTest.isProdTest()){
             locatorMap = (Map<String, Object>)locatorMap.get("prod");
+            if(BaseTest.isAndroidTest()){
+                locatorMap = (Map<String, Object>)locatorMap.get("android");
+            }else{
+                locatorMap = (Map<String, Object>)locatorMap.get("ios");
+            }
             if(replacement.length!= 0)
                 value = getValueAfterReplacement(locatorMap.get("value").toString(), replacement);
             else
@@ -96,28 +89,13 @@ public class DataLoader {
         }
         else{
             locatorMap = (Map<String, Object>)locatorMap.get("qa");
+            if(BaseTest.isAndroidTest()){
+                locatorMap = (Map<String, Object>)locatorMap.get("android");
+            }else{
+                locatorMap = (Map<String, Object>)locatorMap.get("ios");
+            }
             if(replacement.length!= 0)
                 value = getValueAfterReplacement(locatorMap.get("value").toString(), replacement);
-            else
-                value = locatorMap.get("value").toString();
-        }
-        return getLocatorType(locatorMap.get("locatorType").toString(), value);
-    }
-
-    public static By getLocatorMobile(String filePath, String locatorName, String ...replacement) {
-        Map<String, Object> locatorMap = readLocatorYaml(filePath, locatorName);
-        String value;
-        if(BaseTest.isProdTest()){
-            locatorMap = (Map<String, Object>)locatorMap.get("prod");
-            if(replacement.length!= 0)
-                value = getValueAfterReplacement(locatorMap.get("valueMobile").toString(), replacement);
-            else
-                value = locatorMap.get("value").toString();
-        }
-        else{
-            locatorMap = (Map<String, Object>)locatorMap.get("prod");
-            if(replacement.length!= 0)
-                value = getValueAfterReplacement(locatorMap.get("valueMobile").toString(), replacement);
             else
                 value = locatorMap.get("value").toString();
         }

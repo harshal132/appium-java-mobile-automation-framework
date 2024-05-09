@@ -20,6 +20,11 @@ public class FilePath {
 
     public static final String TEST_DATA_MODULE_ONE = REAL_DATA_FILE_PATH + "moduleone" + File.separator + "moduleone.yml";
     public static final String TEST_DATA_MODULE_TWO = REAL_DATA_FILE_PATH + "moduletwo" + File.separator + "moduletwo.yml";
+
+    public static final String REAL_LOCATORS_DIRECTORY = REAL_RESOURCES_PATH + "locators" + File.separator;
+    public static final String REAL_LOCATORS_MODULE_ONE_DIRECTORY = REAL_LOCATORS_DIRECTORY + "moduleone"+ File.separator;
+
+    public static final String REAL_LOCATORS_MODULE_ONE_PAGE_ONE = REAL_LOCATORS_MODULE_ONE_DIRECTORY + "moduleonepageone.yml";
     public FilePath() {
 
     }

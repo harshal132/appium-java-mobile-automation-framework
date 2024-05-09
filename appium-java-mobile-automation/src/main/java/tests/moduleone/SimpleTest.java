@@ -1,10 +1,11 @@
 package tests.moduleone;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+import common.constants.FilePath;
 import io.appium.java_client.AppiumDriver;
 import org.testng.annotations.Test;
 import pages.BasePage;
 import tests.BaseTest;
+import utils.DataLoader;
 
 import java.net.MalformedURLException;
 
@@ -15,7 +16,7 @@ public class SimpleTest extends BaseTest {
         System.out.println("Test Execution started");
         BasePage.logTestStep("Test Execution Started");
 
-        AppiumDriver browserDriver = basePage.launchAnotherApp("com.android.chrome", "com.google.android.apps.chrome.Main");
+        AppiumDriver browserDriver = basePage.launchAnotherApp(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppId.android"), DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppPackage"));
 
         //
         // Perform Actions On Browser

@@ -24,7 +24,7 @@ public class ExtentManager {
     }
 
     public static ExtentReports createInstance() {
-        String fileName = getReportPath(FilePath.REAL_REPORTS_FILE_PATH);
+        String fileName = getReportPath(FilePath.REAL_REPORTS_DIRECTORY);
         String reportName = getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"testSuiteReportName");
         ExtentSparkReporter reporter = new ExtentSparkReporter(fileName);
         reporter.config().setTheme(Theme.DARK);

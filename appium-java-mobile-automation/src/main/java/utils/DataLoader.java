@@ -3,11 +3,9 @@ package utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 import common.constants.FilePath;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.yaml.snakeyaml.Yaml;
 import tests.BaseTest;
@@ -27,12 +25,12 @@ public class DataLoader {
         return (Map<String, Object>) obj.get(locatorName);
     }
 
-    public static String getAppData(String filePAth, String keyName) {
+    public static String getAppData(String filePath, String keyName) {
         Yaml yaml = new Yaml();
         InputStream inputStream = null;
         Map<String, Object> obj = null;
         try {
-            inputStream = new FileInputStream(filePAth);
+            inputStream = new FileInputStream(filePath);
             obj = yaml.load(inputStream);
 
         } catch (FileNotFoundException e) {
@@ -100,6 +98,28 @@ public class DataLoader {
                 value = locatorMap.get("value").toString();
         }
         return getLocatorType(locatorMap.get("locatorType").toString(), value);
+    }
+
+    public static String getCommonData(String keyName){
+        String filePath = FilePath.REAL_COMMON_DATA_FILE_PATH;
+        Yaml yaml = new Yaml();
+        InputStream inputStream = null;
+        Map<String, Object> obj = null;
+        try {
+            inputStream = new FileInputStream(filePath);
+            obj = yaml.load(inputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(obj == null){
+            return null;
+        }else{
+            if(BaseTest.isProdTest()){
+                return getValueByKey((Map<String, Object>) obj.get("prod"),keyName);
+            }else{
+                return getValueByKey((Map<String, Object>) obj.get("qa"),keyName);
+            }
+        }
     }
 
     private static By getLocatorType(String yamlLocatorType, String locatorValue) {

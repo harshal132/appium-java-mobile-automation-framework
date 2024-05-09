@@ -1,0 +1,15 @@
+userCredentials:
+  qa:
+    adminUser:
+      username: aau@yopmail.com
+      password: Test@12345
+    viewerUser:
+      username: viewonly@yopmail.com
+      password: Test@12345
+  prod:
+    adminUser:
+      username: aau@yopmail.com
+      password: Test@12345
+    viewerUser:
+      username: viewonly@yopmail.com
+      password: Test@12345

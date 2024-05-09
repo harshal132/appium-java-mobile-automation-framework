@@ -28,6 +28,7 @@ public class FilePath {
     // Sub directories under Locators directory
     public static final String REAL_LOCATORS_MODULE_ONE_DIRECTORY = REAL_LOCATORS_DIRECTORY + "moduleone"+ File.separator;
     public static final String REAL_LOCATORS_MODULE_ONE_PAGE_ONE = REAL_LOCATORS_MODULE_ONE_DIRECTORY + "moduleonepageone.yml";
+    public static final String REAL_LOCATORS_MODULE_ONE_WELCOME_SCREEN = REAL_LOCATORS_MODULE_ONE_DIRECTORY + "welcome-screen.yml";
     public static final String REAL_LOCATORS_MODULE_TWO_DIRECTORY = REAL_LOCATORS_DIRECTORY + "moduletwo"+ File.separator;
     public static final String REAL_LOCATORS_MODULE_TWO_PAGE_ONE = REAL_LOCATORS_MODULE_TWO_DIRECTORY + "moduletwopageone.yml";
 

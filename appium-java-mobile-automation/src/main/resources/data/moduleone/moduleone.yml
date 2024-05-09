@@ -7,3 +7,18 @@ executeDataManagementTest:
     - key1: FirstValueForKeyOne
     - key1: SecondValueForKeyOne
     - key1: ThreeValueForKeyOne
+
+verifyComponentLabels:
+  qa:
+    - getStarted: GET STARTED
+      growYourBusiness: Grow your business to new height with HiDubai Business
+      appDescription: Duis aute irure dolor in reprehenderit in nulla eu voluptate velit esse cillum dolore fugiat
+      login: LOGIN
+      signup: NEW USER? SIGNUP
+
+  prod:
+    - getStarted: GET STARTED
+      growYourBusiness: Grow your business to new height with HiDubai Business
+      appDescription: Duis aute irure dolor in reprehenderit in nulla eu voluptate velit esse cillum dolore fugiat
+      login: LOGIN
+      signup: NEW USER? SIGNUP

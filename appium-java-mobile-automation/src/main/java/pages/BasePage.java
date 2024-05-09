@@ -227,7 +227,15 @@ public class BasePage {
         } catch (Exception e) {
             System.out.println("Exception reached: Could not get element is displayed status"+ e);
             throw e;
+        }
+    }
 
+    public boolean isElementDisplayed(By locator) {
+        try {
+            return driver.findElement(locator).isDisplayed();
+        } catch (Exception e) {
+            System.out.println("Element not displayed"+ e.getMessage());
+            return false;
         }
     }
 
@@ -830,6 +838,8 @@ public class BasePage {
 
     public void swipeScreenHorizontallyByPercentage(int startPercentage, int endPercentage){
         Dimension size = driver.manage().window().getSize();
+        WebElement element = driver.findElement(By.id("ddd"));
+        size = element.getSize();
         int anchor = (int) (size.height * 0.5);
         int startPoint = (int) (size.width * (startPercentage*0.01));
         int endPoint = (int) (size.width * (endPercentage*0.01));
@@ -845,7 +855,7 @@ public class BasePage {
         }
     }
 
-    public static void logTestStep(String description) {
+    public void logTestStep(String description) {
         try{
             ExtentTestManager.getTest().log(Status.INFO,description, MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshot()).build());
         }catch(IOException e){
@@ -853,7 +863,7 @@ public class BasePage {
         }
     }
 
-    public static void logTestStep(String description, By locator) {
+    public void logTestStep(String description, By locator) {
         try{
             ExtentTestManager.getTest().log(Status.INFO,description, MediaEntityBuilder.createScreenCaptureFromBase64String(takeScreenshotOfElement(locator)).build());
         }catch(IOException e){

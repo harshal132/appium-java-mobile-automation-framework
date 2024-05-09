@@ -44,23 +44,14 @@ public class BaseTest {
 
         AppiumDriver driver = MobileDriverFactory.getAppiumDriver(testEnvType, driverType, platformName, deviceType, appiumServerUrl, wdaPortNumber);
         setDriver(driver);
-        setLoggedInState(false);
     }
 
     public static void setDriver(AppiumDriver driver) {
         threadLocalDriver.set(driver);
     }
 
-    public static void setLoggedInState(Boolean state) {
-        loggedInState.set(state);
-    }
-
     public static AppiumDriver getDriver() {
         return threadLocalDriver.get();
-    }
-
-    public static Boolean getLoggedInState() {
-        return loggedInState.get();
     }
 
     public static void removeDriver() {

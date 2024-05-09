@@ -1,0 +1,99 @@
+appLogo:
+  qa:
+    android:
+      locatorType: id
+      value: logo_hidubai_business
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: get_started
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+getStartedLabel:
+  qa:
+    android:
+      locatorType: id
+      value: get_started
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: get_started
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+growYourBusinessLabel:
+  qa:
+    android:
+      locatorType: id
+      value: grow_your_business
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: get_started
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+appDescription:
+  qa:
+    android:
+      locatorType: id
+      value: sample_text
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: sample_text
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+loginButton:
+  qa:
+    android:
+      locatorType: id
+      value: login_button
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: login_button
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+signupButton:
+  qa:
+    android:
+      locatorType: id
+      value: signup_button
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+  prod:
+    android:
+      locatorType: id
+      value: signup_button
+    ios:
+      locatorType: empty # need to be updated
+      value: empty # need to be updated
+
+
+
+

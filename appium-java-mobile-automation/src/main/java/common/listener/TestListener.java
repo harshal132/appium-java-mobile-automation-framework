@@ -75,16 +75,16 @@ public class TestListener extends BaseTest implements ITestListener {
             final String screenShotName = testMethodName + ".png";
             final String screenshotsDirectoryPath = FilePath.REAL_TEST_SCREENSHOT_DIR;
 
-            File targetFileDir = new File(screenshotsDirectoryPath);
-            if (!targetFileDir.exists()) {
-                targetFileDir.mkdir();
-            }
-            File targetFile = new File(screenshotsDirectoryPath, screenShotName);
+//            File targetFileDir = new File(screenshotsDirectoryPath);
+//            if (!targetFileDir.exists()) {
+//                targetFileDir.mkdir();
+//            }
+            //File targetFile = new File(screenshotsDirectoryPath, screenShotName);
             File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshotFile, targetFile);
+            //FileUtils.copyFile(screenshotFile, targetFile);
 
-            fileInputStream = new FileInputStream(targetFile);
-            byte[] bytes = new byte[(int) targetFile.length()];
+            fileInputStream = new FileInputStream(screenshotFile);
+            byte[] bytes = new byte[(int) screenshotFile.length()];
             fileInputStream.read(bytes);
             encodedBase64 = new String(Base64.getEncoder().encode((bytes)));
 
@@ -107,16 +107,16 @@ public class TestListener extends BaseTest implements ITestListener {
             final String screenShotName = screenshotName + ".png";
             final String screenshotsDirectoryPath = FilePath.REAL_TEST_SCREENSHOT_DIR;
 
-            File targetFileDir = new File(screenshotsDirectoryPath);
-            if (!targetFileDir.exists()) {
-                targetFileDir.mkdir();
-            }
-            File targetFile = new File(screenshotsDirectoryPath, screenShotName);
+//            File targetFileDir = new File(screenshotsDirectoryPath);
+//            if (!targetFileDir.exists()) {
+//                targetFileDir.mkdir();
+//            }
+            // File targetFile = new File(screenshotsDirectoryPath, screenShotName);
             File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshotFile, targetFile);
+            // FileUtils.copyFile(screenshotFile, targetFile);
 
-            fileInputStream = new FileInputStream(targetFile);
-            byte[] bytes = new byte[(int) targetFile.length()];
+            fileInputStream = new FileInputStream(screenshotFile);
+            byte[] bytes = new byte[(int) screenshotFile.length()];
             fileInputStream.read(bytes);
             encodedBase64 = new String(Base64.getEncoder().encode((bytes)));
 

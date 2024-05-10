@@ -4,8 +4,8 @@ appLogo:
       locatorType: id
       value: logo_hidubai_business
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: id
+      value: NEW_LOGO
   prod:
     android:
       locatorType: id
@@ -20,8 +20,8 @@ getStartedLabel:
       locatorType: id
       value: get_started
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: xpath
+      value: //XCUIElementTypeStaticText[contains(@label,'GET STARTED')]
   prod:
     android:
       locatorType: id
@@ -36,8 +36,8 @@ growYourBusinessLabel:
       locatorType: id
       value: grow_your_business
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: xpath
+      value: //XCUIElementTypeStaticText[contains(@label,'Grow your business')]
   prod:
     android:
       locatorType: id
@@ -52,8 +52,8 @@ appDescription:
       locatorType: id
       value: sample_text
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: xpath
+      value: //XCUIElementTypeStaticText[contains(@label,'Duis aute irure dolor')]
   prod:
     android:
       locatorType: id
@@ -68,8 +68,8 @@ loginButton:
       locatorType: id
       value: login_button
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: xpath
+      value: //XCUIElementTypeButton[contains(@label,'LOGIN')]
   prod:
     android:
       locatorType: id
@@ -84,8 +84,8 @@ signupButton:
       locatorType: id
       value: signup_button
     ios:
-      locatorType: empty # need to be updated
-      value: empty # need to be updated
+      locatorType: xpath
+      value: //XCUIElementTypeButton[contains(@label,'SIGNUP')]
   prod:
     android:
       locatorType: id

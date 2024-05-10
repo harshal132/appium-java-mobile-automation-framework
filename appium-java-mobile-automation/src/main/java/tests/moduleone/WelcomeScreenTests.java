@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class WelcomeScreenTests extends BaseTest {
 
-    @Test
+    @Test(priority = 1)
     public void verifyWelcomeScreenComponents(){
         SoftAssertListener softAssert = new SoftAssertListener();
         WelcomeScreen welcomeScreen = new WelcomeScreen(BaseTest.getDriver());
@@ -30,7 +30,7 @@ public class WelcomeScreenTests extends BaseTest {
     }
 
 
-    @Test(dataProvider = "module1", dataProviderClass = TestDataProvider.class)
+    @Test(dataProvider = "module1", dataProviderClass = TestDataProvider.class, priority = 2)
     public void verifyComponentLabels(Map<String,Object> testData){
         SoftAssertListener softAssert = new SoftAssertListener();
         WelcomeScreen welcomeScreen = new WelcomeScreen(BaseTest.getDriver());

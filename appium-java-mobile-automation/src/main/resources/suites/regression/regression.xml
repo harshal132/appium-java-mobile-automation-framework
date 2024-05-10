@@ -6,13 +6,13 @@
     </listeners>
     <parameter name="EnvType" value="qa" />
     <parameter name="DriverType" value="local" />
-    <test name="Single Test">
-        <parameter name="Platform" value="android" />
-        <parameter name="Emulator" value="emulator" />
-        <parameter name="Port" value="4724" />
+    <test name="Welcome screen tests">
+        <parameter name="Platform" value="ios" />
+        <parameter name="Emulator" value="real" />
+        <parameter name="Port" value="4723" />
+        <parameter name="WdaPort" value="8100" />
         <classes>
-<!--            <class name="com.pindubai.automation.test.MainProfileTabScreenTests" />-->
-<!--            <class name="com.pindubai.automation.test.ExploreScreenTests" />-->
+            <class name="tests.moduleone.WelcomeScreenTests"/>
         </classes>
     </test>
 </suite> <!-- Suite -->

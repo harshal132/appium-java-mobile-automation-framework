@@ -9,7 +9,9 @@ This framework utilises below mentioned tools for Mobile app automation.
 
 # Report Format:
 Utilised **ExtentSparkReporter** for reporting.
+
 <img width="872" alt="Screenshot 2024-05-13 at 10 29 32 AM" src="https://github.com/harshal132/appium-java-mobile-automation-framework/assets/73284463/0770eac3-a8c6-48ad-a2d7-6f64fc7e879d">
+
 <img width="1339" alt="Screenshot 2024-05-13 at 10 29 48 AM" src="https://github.com/harshal132/appium-java-mobile-automation-framework/assets/73284463/133d9b69-556d-42bf-b378-707336d7afc3">
 
 # Locators and Test Data Management

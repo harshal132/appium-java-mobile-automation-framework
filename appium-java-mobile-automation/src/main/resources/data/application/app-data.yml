@@ -6,6 +6,8 @@ waitTime:
   small: 2000
   medium: 5000
   high: 8000
+  vhigh: 12000
+  vvhigh: 15000
 
 testSuiteReportName: Test Suite Execution Report
 remoteHubUrl: https://www.remote.com
@@ -14,6 +16,6 @@ appiumLocalIp: 127.0.0.1
 
 chromeAppId:
   android: com.android.chrome
-  ios: com.ios.chrome
+  ios: com.google.chrome.ios
 
 chromeAppPackage: com.google.android.apps.chrome.Main

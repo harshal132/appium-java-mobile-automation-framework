@@ -889,6 +889,34 @@ public class BasePage {
         return new String(Base64.getEncoder().encode((bytes)));
     }
 
+    public void minimizeCurrentMobileApp(){
+        // Terminates current app
+        try{
+            if(BaseTest.isIosTest()){
+                ((IOSDriver) driver).terminateApp(getAppId().get("bundleId"));
+            }
+            else{
+                ((AndroidDriver) driver).terminateApp(getAppId().get("appId"));
+            }
+        }catch(Exception e){
+            System.out.println("Exception caught during background operation "+e.getMessage());
+        }
+    }
+
+    public void runAppInBackgroundForTime(Duration duration){
+        // Launches app again after given duration
+        try{
+            if(BaseTest.isIosTest()){
+                ((IOSDriver) driver).runAppInBackground(duration);
+            }
+            else{
+                ((AndroidDriver) driver).runAppInBackground(duration);
+            }
+        }catch(Exception e){
+           System.out.println("Exception caught during background operation "+e.getMessage());
+        }
+    }
+
     public AppiumDriver launchAnotherApp(String packageName, String... activityName) throws MalformedURLException {
         AppiumDriver newAppDriver = MobileDriverFactory.getBrowserDriver(BaseTest.getDriver().getCapabilities(), packageName, activityName);
         if(BaseTest.isIosTest()){

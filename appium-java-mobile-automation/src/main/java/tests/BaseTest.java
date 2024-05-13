@@ -34,7 +34,7 @@ public class BaseTest {
 
     @Parameters({ "Platform", "Emulator", "Port", "WdaPort" })
     @BeforeTest(alwaysRun = true)
-    public void setUpAppium(@Optional("ios") String platform, @Optional("real") String testDeviceType, @Optional("4723") String portNumber, @Optional("8100") String wdaPort, Method method) throws Exception {
+    public void setUpAppium(@Optional("android") String platform, @Optional("real") String testDeviceType, @Optional("4723") String portNumber, @Optional("8100") String wdaPort, Method method) throws Exception {
         platformName = Platform.get(platform);
         deviceType = DeviceType.get(testDeviceType);
         System.out.println("Test running on platform: " + platform);

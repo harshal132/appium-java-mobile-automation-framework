@@ -8,6 +8,7 @@ import tests.BaseTest;
 import utils.DataLoader;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 
 public class SimpleTest extends BaseTest {
     @Test
@@ -15,12 +16,31 @@ public class SimpleTest extends BaseTest {
         BasePage basePage = new BasePage(BaseTest.getDriver());
         System.out.println("Test Execution started");
         //BasePage.logTestStep("Test Execution Started");
-
-        AppiumDriver browserDriver = basePage.launchAnotherApp(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppId.android"), DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppPackage"));
-
+        AppiumDriver browserDriver;
+        if(BaseTest.isIosTest()){
+            browserDriver = basePage.launchAnotherApp(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppId.android"), DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppPackage"));
+        }else{
+            browserDriver = basePage.launchAnotherApp(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"chromeAppId.ios"));
+        }
         //
         // Perform Actions On Browser
         //
+
+        // Relaunch Main Application
+        basePage.launchApp();
+
+    }
+
+    @Test
+    public void appBackgroundVerification() {
+        BasePage basePage = new BasePage(BaseTest.getDriver());
+        System.out.println("Test Execution started");
+
+        basePage.hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.vvhigh"));
+        // basePage.runAppInBackgroundForTime(Duration.ofSeconds(10)); // -> closes and relaunches app after given duration
+
+        basePage.minimizeCurrentMobileApp();
+
 
         // Relaunch Main Application
         basePage.launchApp();

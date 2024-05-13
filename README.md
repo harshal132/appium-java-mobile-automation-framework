@@ -18,9 +18,11 @@ Utilised **ExtentSparkReporter** for reporting.
 Test data and locators are stored in Yaml file for easy access and management of data based on each test method.
 
 **Test data management**:
+
 <img width="670" alt="Screenshot 2024-05-13 at 10 31 33 AM" src="https://github.com/harshal132/appium-java-mobile-automation-framework/assets/73284463/e166746c-78ab-4441-b4bf-dace94b3ad66">
 
 **Locators management:**
+
 <img width="1276" alt="Screenshot 2024-05-13 at 10 32 55 AM" src="https://github.com/harshal132/appium-java-mobile-automation-framework/assets/73284463/c4fe9587-520a-44d6-8b59-ff60349730c6">
 
 # Advantages:

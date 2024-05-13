@@ -303,20 +303,6 @@ public class BasePage {
         return elementInvisible;
     }
 
-    protected WebElement waitForElementToBecomeUnstale(By locator) {
-        WebElement element = null;
-        try {
-            element = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofMillis(10000))
-                    .pollingEvery(Duration.ofMillis(500)).ignoring(StaleElementReferenceException.class)
-                    .ignoring(TimeoutException.class)
-                    .until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(locator)));
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not wait for element to be stale"+ e);
-            throw e;
-        }
-        return element;
-    }
-
     public void waitForScreenToLoad() {
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(10000));
@@ -356,17 +342,6 @@ public class BasePage {
         }
     }
 
-    public void jsTerminateAppClearingCache() {
-        try {
-            JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
-            jsDriver.executeScript("mobile: terminateApp", getAppId());
-            System.out.println("app terminated and cleared cache");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not terminate app"+ e);
-            throw e;
-        }
-    }
-
     public void jsPutAppInBackground() {
         try {
             JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
@@ -378,46 +353,11 @@ public class BasePage {
         };
     }
 
-    public void jsActivateAppithoutClearingCache() {
-        try {
-            JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
-            jsDriver.executeScript("mobile: activateApp", getAppId());
-            System.out.println("activated app without clearing cache");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not activate app"+ e);
-            throw e;
-        }
-    }
-
-    public void jsCloseAndlaunchAppClearingCache() {
-        try {
-            jsTerminateAppClearingCache();
-            jsActivateAppithoutClearingCache();
-            System.out.println("clse and launch app after clearing cache");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not close and launch app"+ e);
-            throw e;
-        }
-    }
-
     public void hardWait(String waitTime){
         try {
             Thread.sleep(Integer.parseInt(waitTime));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public void jsLaunchAppWithoutClearingCache() {
-        try {
-            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
-            JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
-            jsDriver.executeScript("mobile: launchApp", getAppId());
-            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
-            System.out.println("launched app without clearing cache");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not launch app"+ e);
-            throw e;
         }
     }
 
@@ -458,26 +398,56 @@ public class BasePage {
         return isKeyboardShown;
     }
 
+    public void openAndroidNotifications() {
+        if(BaseTest.isAndroidTest()){
+            ((AndroidDriver) driver).openNotifications();
+        }
+    }
+
+    public void toggleAndroidWifiNetwork() {
+        if(BaseTest.isAndroidTest()){
+            ((AndroidDriver) driver).toggleWifi();
+        }
+    }
+    public void toggleAndroidMobileData() {
+        if(BaseTest.isAndroidTest()){
+            ((AndroidDriver) driver).toggleData();
+        }
+    }
+    public void toggleAndroidLocationServices() {
+        if(BaseTest.isAndroidTest()){
+            ((AndroidDriver) driver).toggleLocationServices();
+        }
+    }
+
+    public void uninstallApplication() {
+        if(BaseTest.isIosTest()){
+            ((IOSDriver) driver).removeApp(getAppId().get("bundleId"));
+        }
+        else{
+            ((AndroidDriver) driver).removeApp(getAppId().get("appId"));
+        }
+    }
+
+    public Map<String, String> getAppStringMap() {
+        if(BaseTest.isAndroidTest()){
+            return ((AndroidDriver) driver).getAppStringMap();
+        }else{
+            return ((IOSDriver) driver).getAppStringMap();
+        }
+    }
+
+    public void toggleAndroidAirPlaneMode() {
+        if(BaseTest.isAndroidTest()){
+            ((AndroidDriver) driver).toggleLocationServices();
+        }
+    }
+
     public enum Direction {
         RIGHT,
         LEFT,
         DOWN,
         UP
-    }
-
-    public void jsIosScrollTillEnd(int numberOfTimesToScroll, Direction directionToReach) {
-        try {
-            JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
-            int counter = 1;
-            while(counter <= numberOfTimesToScroll) {
-                jsDriver.executeScript("mobile: scroll", ImmutableMap.of("direction", directionToReach.toString().toLowerCase()));
-                counter++;
-            }
-            System.out.println("performed scroll");
-        } catch (Exception e) {
-            System.out.println("Exception reached: Could not scroll"+ e);
-            throw e;
-        }
     }
 
     public void scrollByCoordinates(int startx, int starty, int endx, int endy) {
@@ -630,18 +600,6 @@ public class BasePage {
         }
     }
 
-    public void tapOnMidOfScreen() {
-        try {
-            int x = driver.manage().window().getSize().getWidth() / 2;
-            int y = driver.manage().window().getSize().getHeight() / 2;
-            tapByCoordinates(x, y);
-            System.out.println("performed tap on screen");
-        } catch(Exception e) {
-            System.out.println("Exception reached: Could not tap on screen"+ e);
-            throw e;
-        }
-    }
-
     public void tapOnElement(WebElement element) {
         try {
             Point sourceLocation = element.getLocation();
@@ -688,7 +646,6 @@ public class BasePage {
         doubleTapOnElement(getElement(locator));
     }
 
-
     protected void dragAndDrop(WebElement sourceElement, WebElement destinationElement) {
         try {
             Point sourceLocation = sourceElement.getLocation();
@@ -718,16 +675,6 @@ public class BasePage {
 
     protected void dragAndDrop(By sourceLocator, By destinationLocator) {
         dragAndDrop(getElement(sourceLocator), getElement(destinationLocator));
-    }
-
-    public void getPageSource() {
-        try {
-            System.out.println(driver.getPageSource());
-            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
-        } catch(Exception e) {
-            System.out.println("Exception reached: Could not get page source"+ e);
-            throw e;
-        }
     }
 
     public void tapDeviceHomeButton() {
@@ -871,7 +818,7 @@ public class BasePage {
         }
     }
 
-    public static String takeScreenshot() throws IOException {
+    private static String takeScreenshot() throws IOException {
         File screenshotFile = ((TakesScreenshot) BaseTest.getDriver()).getScreenshotAs(OutputType.FILE);
         FileInputStream fileInputStream = new FileInputStream(screenshotFile);
         byte[] bytes = new byte[(int) screenshotFile.length()];
@@ -880,7 +827,7 @@ public class BasePage {
         return new String(Base64.getEncoder().encode((bytes)));
     }
 
-    public static String takeScreenshotOfElement(By locator) throws IOException {
+    private static String takeScreenshotOfElement(By locator) throws IOException {
         File screenshotFile = ((TakesScreenshot) BaseTest.getDriver().findElement(locator)).getScreenshotAs(OutputType.FILE);
         FileInputStream fileInputStream = new FileInputStream(screenshotFile);
         byte[] bytes = new byte[(int) screenshotFile.length()];

@@ -1,6 +1,7 @@
 package tests.moduleone;
 
 import common.constants.FilePath;
+import common.constants.WaitTime;
 import io.appium.java_client.AppiumDriver;
 import org.testng.annotations.Test;
 import pages.BasePage;
@@ -34,7 +35,7 @@ public class SimpleTest extends BaseTest {
         BasePage basePage = new BasePage(BaseTest.getDriver());
         System.out.println("Test Execution started");
 
-        basePage.hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.vvhigh"));
+        basePage.hardWait(WaitTime.VHIGH);
         // basePage.runAppInBackgroundForTime(Duration.ofSeconds(10)); // -> closes and relaunches app after given duration
         basePage.minimizeCurrentMobileApp();
         // Relaunch Main Application

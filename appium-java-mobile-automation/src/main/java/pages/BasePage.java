@@ -4,6 +4,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.google.common.collect.ImmutableMap;
 import common.constants.FilePath;
+import common.constants.WaitTime;
 import config.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -126,7 +127,7 @@ public class BasePage {
             clearText(element);
             text.chars().forEach(ch -> {
                 element.sendKeys(Character.toString((char) ch));
-                hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.vvsmall"));
+                hardWait(WaitTime.VVLOW);
             });
             System.out.println("Text entered on element char by char: " + text);
         } catch (Exception e) {
@@ -353,9 +354,9 @@ public class BasePage {
         };
     }
 
-    public void hardWait(String waitTime){
+    public void hardWait(WaitTime time){
         try {
-            Thread.sleep(Integer.parseInt(waitTime));
+            Thread.sleep(time.getTimeInMillis());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -458,7 +459,7 @@ public class BasePage {
             scroll.addAction(finger.createPointerMove(Duration.ofMillis(700), PointerInput.Origin.viewport(), endx, endy));
             scroll.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
             driver.perform(List.of(scroll));
-            hardWait(DataLoader.getAppData(FilePath.REAL_APP_DATA_FILE_PATH,"waitTime.small"));
+            hardWait(WaitTime.LOW);
             System.out.println("performed scroll/swipe by coordinates");
         } catch(Exception e) {
             System.out.println("Exception reached: Could not scroll/swipe by coordinates"+ e);
